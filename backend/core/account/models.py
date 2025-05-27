@@ -42,3 +42,9 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+class Profile(User):
+    username = models.CharField(max_length = 250, unique = True)
+    avatar = models.ImageField(blank = True)
+    school = models.CharField(blank = True, null = True)
+
