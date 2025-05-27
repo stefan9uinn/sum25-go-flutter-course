@@ -43,8 +43,11 @@ class User(AbstractBaseUser, PermissionsMixin):
     def __str__(self):
         return self.email
 
-class Profile(User):
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete = models.CASCADE)
     username = models.CharField(max_length = 250, unique = True)
     avatar = models.ImageField(blank = True)
     school = models.CharField(blank = True, null = True)
 
+    def __str__(self):
+        return self.user.email
