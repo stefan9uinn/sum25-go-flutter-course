@@ -2,7 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
 from django.contrib.auth.base_user import BaseUserManager
-
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 class CustomUserManager(BaseUserManager):
     def create_user(self, email, password, **extra_fields):
@@ -45,9 +46,14 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete = models.CASCADE)
-    username = models.CharField(max_length = 250, unique = True)
+    username = models.CharField(max_length = 250)
     avatar = models.ImageField(blank = True)
     school = models.CharField(blank = True, null = True)
 
     def __str__(self):
         return self.user.email
+
+@receiver(post_save, sender = User)
+def save_user(sender, instance, created, **kwargs):
+    if created:
+        Profile.objects.create(user = instance)
