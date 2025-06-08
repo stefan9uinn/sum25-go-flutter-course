@@ -1,21 +1,13 @@
 # version: '3.8'
 services:
   backend:
-    build: ./backend/
+    build: .
     # container_name: backend
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./backend/core:/app
+      - ./core:/app
     ports:
       - "8000:8000"
     environment:
       - SECRET_KEY=test
       - DEBUG=True
-
-  frontend-37:
-    build: ./frontend-37
-    # container_name: frontend-37
-    volumes:
-      - ./frontend-37:/app
-    ports:
-      - "5173:5173"
