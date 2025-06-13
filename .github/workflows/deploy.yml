@@ -3,7 +3,7 @@ name: Deploy via SSH with Docker Compose
 on:
   push:
     branches:
-      - 27-ci-cd
+      main
 
 jobs:
   deploy:
@@ -30,7 +30,7 @@ jobs:
           ssh -i ~/.ssh/deploy_key -p ${{ secrets.DEPLOY_PORT }} ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_IP }} << 'EOF'
             set -e
             cd ~/Database-Playground
-            git pull origin 27-ci-cd
+            git pull origin main
             docker compose build
             docker compose up -d
           EOF
