@@ -4,6 +4,6 @@ class DBSchema(models.Model):
     author = models.CharField(max_length=20)
     title = models.CharField(max_length=30)
     type = models.CharField(max_length=10)
-    sql_dump = models.TextField()
+    schema_description = models.TextField()
 
 
