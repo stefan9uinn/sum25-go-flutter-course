@@ -7,6 +7,7 @@ on:
 
 jobs:
   deploy:
+    if: github.repository == 'slant14/Database-Playground'
     runs-on: ubuntu-latest
 
     steps:
