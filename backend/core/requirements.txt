@@ -6,3 +6,4 @@ Markdown==3.8
 pillow==11.2.1
 python-decouple==3.8
 sqlparse==0.5.3
+chromadb==0.4.24
