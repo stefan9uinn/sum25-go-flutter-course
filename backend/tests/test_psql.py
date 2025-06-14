@@ -40,3 +40,22 @@ def test_1():
     assert any(table.name == "users" for table in db.tables)
     assert any(any((c.name, c.type) == ('age', 'integer') for c in t.columns) for t in db.tables)
     assert any(any((c.name, c.type) == ('name', 'character varying') for c in t.columns) for t in db.tables)
+
+
+def test_2():
+    engine = PostgresEngine(
+        root_db="dbpg",
+        user="dbpg",
+        password="dbpg_pwd",
+        host="127.0.0.1",
+        port=5432,
+    )
+
+    engine.create_db("test_2_db", dump_1)
+
+    results = engine.send_query("test_2_db", "SELECT * FROM users; SELECT COUNT(*) FROM users;")
+    
+    for r in results:
+        print(r)
+
+    engine.drop_db("test_2_db")
