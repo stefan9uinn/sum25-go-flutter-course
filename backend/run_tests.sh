@@ -1,1 +1,0 @@
-PYTHONPATH=. uv run pytest
