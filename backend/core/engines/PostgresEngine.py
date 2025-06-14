@@ -1,11 +1,12 @@
+import time
+from contextlib import contextmanager
+
 import psycopg2
 from psycopg2.sql import SQL, Identifier
 from psycopg2.extensions import cursor
-from contextlib import contextmanager
 
 from core.engines.SQLEngine import SQLEngine
 from core.engines.models import DBInfo, QueryResult
-
 from core.engines.utility import postgres_wrap_exceptions as wrap_exceptions
 
 
@@ -73,11 +74,15 @@ class PostgresEngine(SQLEngine):
     def _save_query_result(self, cur: cursor, query: str, results: list[QueryResult]):
         rowcount = cur.rowcount
         data = None
+
+        start = time.perf_counter()
         try:
             data = cur.fetchall()
         except psycopg2.ProgrammingError:
             pass
-        results.append(QueryResult(query, rowcount, data))
+        execution_time = time.perf_counter() - start
+
+        results.append(QueryResult(query, rowcount, data, execution_time))
                 
             
     def _split_queries(self, big_query: str) -> list[str]:

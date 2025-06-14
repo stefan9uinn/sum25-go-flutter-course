@@ -58,3 +58,4 @@ class QueryResult:
     query: str
     rowcount: int
     data: list[tuple] | None
+    execution_time: float
