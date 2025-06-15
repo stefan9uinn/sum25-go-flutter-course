@@ -1,5 +1,5 @@
 # Stage 1: Create .env file
-FROM python:3 as builder
+FROM python:3 AS builder
 
 # Generate .env with debug-friendly settings
 RUN python -c "import secrets; \
