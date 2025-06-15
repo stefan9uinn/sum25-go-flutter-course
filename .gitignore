@@ -143,6 +143,9 @@ venv.bak/
 # VScode project settings
 .vscode/
 
+# React app settings
+frontend/node_modules/
+
 # Rope project settings
 .ropeproject
 
