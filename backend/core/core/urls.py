@@ -18,18 +18,11 @@ from django.contrib import admin
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import HttpResponse
-
-def home(request):
-    return HttpResponse("Welcome to the application! OUR API is available at /api/")
-
-def api_docs(request):
-    return HttpResponse("https://app.swaggerhub.com/templates/team46-ab6/SWP/0.0.1")
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', home, name='home'),
-    path('api/', api_docs, name='api_docs'),
+    path('', TemplateView.as_view(template_name='index.html'), name='home'),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
