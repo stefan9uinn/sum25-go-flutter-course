@@ -2,7 +2,7 @@ import styles from "./Schema.module.css";
 
 export default function Schema({ schema }) {
   return (
-    <div className={styles.wrapper}>
+    <div>
       {schema.columns.map((col) => (
         <div className={styles.item} key={col.name}>
           {col.name} {col.type} {col.attrs}

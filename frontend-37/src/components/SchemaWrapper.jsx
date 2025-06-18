@@ -6,7 +6,10 @@ import styles from "./SchemaWrapper.module.css";
 export default function SchemaWrapper({ schemas }) {
   const [activeSchema, setActiveSchema] = useState(schemas[0]);
   return (
-    <div>
+    <div
+      className={styles.wrapper}
+      style={{ width: 900, marginLeft: 20, height: 500 }}
+    >
       <div className={styles.tabs}>
         {schemas.map((schema) => (
           <Tab
@@ -16,7 +19,9 @@ export default function SchemaWrapper({ schemas }) {
           />
         ))}
       </div>
-      <Schema schema={activeSchema} />
+      <div className={styles.schema}>
+        <Schema schema={activeSchema} />
+      </div>
     </div>
   );
 }
