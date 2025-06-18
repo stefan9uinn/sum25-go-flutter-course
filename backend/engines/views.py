@@ -7,7 +7,7 @@ def handle_query(request):
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=400)
     
-    query_text = request.POST.get("query")
+    query_text = request.POST.get("code")
     if not query_text:
         return JsonResponse({"error": "Missing query"}, status=400)
     
