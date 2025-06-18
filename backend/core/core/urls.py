@@ -6,6 +6,7 @@ from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions
 from rest_framework import routers
+
 from classroom.views import ClassroomModelViewSet
 
 import schema.views
@@ -44,7 +45,7 @@ urlpatterns = [
         name='schema-redoc'
     ),
     path('test/', include("test.urls")),
-
+    path('template/', include("templates.urls"))
 ]
 urlpatterns += router.urls
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
