@@ -1,30 +1,9 @@
-from django.shortcuts import get_object_or_404
-
 from rest_framework import mixins
 from rest_framework import generics
 from rest_framework.request import Request
-from rest_framework.response import Response
 
 from .models import Template
 from .serializers import TemplateSerializer, MinTemplateSerializer
-
-
-class MinTemplateView(mixins.ListModelMixin,
-                      generics.GenericAPIView):
-    queryset = Template.objects.all()
-    serializer_class = MinTemplateSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.list(request, *args, **kwargs)
-
-
-class GetTemplateView(mixins.RetrieveModelMixin,
-                      generics.GenericAPIView):
-    queryset = Template.objects.all()
-    serializer_class = TemplateSerializer
-
-    def get(self, request, *args, **kwargs):
-        return self.retrieve(request, *args, **kwargs)
 
 
 class TemplateListCreateView(mixins.ListModelMixin,
