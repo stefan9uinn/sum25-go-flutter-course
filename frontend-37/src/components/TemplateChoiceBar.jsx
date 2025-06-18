@@ -1,6 +1,6 @@
 import { TopBar } from "./TopBar";
 import { TopBarElement } from "./TopBarElement";
-import { Button } from "./Button";
+import { Button } from "./ui/Button";
 
 export function TemplateChoiceBar() {
   return (
@@ -41,4 +41,3 @@ export function TemplateChoiceBar() {
     </TopBar>
   );
 }
-

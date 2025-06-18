@@ -1,6 +1,7 @@
 import { TopBar } from "./TopBar";
 import { TopBarElement } from "./TopBarElement";
-import { Button } from "./Button";
+import { Button } from "./ui/Button";
+import { NavLink } from "react-router";
 
 export function PlaygroundBar() {
   return (
@@ -9,7 +10,7 @@ export function PlaygroundBar() {
       contentStyle={{ flexBasis: 521 + "px" }}
     >
       <TopBarElement>
-        <a href="/">
+        <NavLink to="/" end>
           <Button
             style={{
               width: 52 + "px",
@@ -20,10 +21,10 @@ export function PlaygroundBar() {
           >
             <img src="/save.svg"></img>
           </Button>
-        </a>
+        </NavLink>
       </TopBarElement>
       <TopBarElement>
-        <a href="/playground">
+        <NavLink to="/template" end>
           <Button
             style={{
               width: 459 + "px",
@@ -35,7 +36,7 @@ export function PlaygroundBar() {
           >
             PostgreSQL | Template #1
           </Button>
-        </a>
+        </NavLink>
       </TopBarElement>
     </TopBar>
   );

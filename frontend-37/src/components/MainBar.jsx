@@ -1,18 +1,23 @@
 import { TopBar } from "./TopBar";
+import { Button } from "./ui/Button";
 import { TopBarElement } from "./TopBarElement";
-import { Button } from "./Button";
+import { NavLink } from "react-router";
 
 export function MainBar() {
   return (
     <TopBar>
       <TopBarElement>
-        <a href="/">Main</a>
+        <NavLink to="/" end>
+          Main
+        </NavLink>
       </TopBarElement>
       <TopBarElement>
-        <a href="/about">About</a>
+        <NavLink to="/about" end>
+          About
+        </NavLink>
       </TopBarElement>
       <TopBarElement>
-        <a href="/playground">
+        <NavLink to="/playground" end>
           <Button
             style={{
               width: 223.93 + "px",
@@ -22,7 +27,7 @@ export function MainBar() {
           >
             Playground
           </Button>
-        </a>
+        </NavLink>
       </TopBarElement>
     </TopBar>
   );

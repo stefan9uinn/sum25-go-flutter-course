@@ -1,3 +1,4 @@
+import { NavLink } from "react-router";
 import styles from "./TopBar.module.css";
 
 export function TopBar({ children, contentStyle, ...props }) {
@@ -5,7 +6,9 @@ export function TopBar({ children, contentStyle, ...props }) {
     <div className={styles.topbar} {...props}>
       <div className={styles["topbar-title"]}>
         <p>
-          <a href="/">Database Playground</a>
+          <NavLink to="/" end>
+            Database Playground
+          </NavLink>
         </p>
       </div>
       <div className={styles["topbar-content"]} style={contentStyle}>
