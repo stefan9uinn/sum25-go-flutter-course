@@ -20,6 +20,7 @@ from rest_framework.decorators import api_view
 from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.response import Response
+from engines.views import handle_query
 
 @api_view(['GET'])
 def hello_world(request):
@@ -28,6 +29,7 @@ def hello_world(request):
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hello/', hello_world), 
+    path('api/chroma_query/')
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
