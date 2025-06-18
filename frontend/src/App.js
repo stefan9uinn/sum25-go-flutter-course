@@ -7,7 +7,7 @@ import Home from "./components/Home";
 import ClassRooms from "./components/Classrooms";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { getHello } from "./api";
-
+const BASE_URL = process.env.REACT_APP_API_URL || "";
 
 class App extends React.Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class App extends React.Component {
     this.setUser = this.setUser.bind(this);
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
     this.pageRef = {};
   }
 
@@ -51,7 +52,10 @@ class App extends React.Component {
         return (
           <div>
             <Home />
-            <div>Backend says: {this.state.backendMessage}</div>
+            <div>Backend says: {() => {
+              this.componentDidMount();
+              return this.state.backendMessage;
+            }}</div>
           </div>
         );
       case "classrooms":
@@ -114,7 +118,7 @@ class App extends React.Component {
 
   componentDidMount() {
   getHello()
-    .then((data) => this.setState({ backendMessage: data.message }))
+    .then(data => console.log(data))
     .catch((err) => console.error("Failed to fetch backend message", err));
   }
 }

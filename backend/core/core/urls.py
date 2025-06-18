@@ -16,12 +16,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from rest_framework.decorators import api_view
 from django.conf import settings
 from django.conf.urls.static import static
-from django.http import JsonResponse
+from rest_framework.response import Response
 
+@api_view(['GET'])
 def hello_world(request):
-    return JsonResponse({"message": "Hello from Django!"})
+    return Response({"message": "Hello from Django!"})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
