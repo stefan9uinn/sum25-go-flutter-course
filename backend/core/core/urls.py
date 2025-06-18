@@ -21,21 +21,10 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.response import Response
 from engines.views import handle_query
-from engines.views import handle_query
-
-@api_view(['GET'])
-def hello_world(request):
-    return Response({"message": "Hello from Django!"})
-
-@api_view(['POST'])
-def getIt(request):
-    data = request.data
-    return Response({"message": "Data received!", "code": data.get("code")})
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/hello/', hello_world), 
-    path('api/getit/', getIt),
+    path('api/chroma_query/', handle_query), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
