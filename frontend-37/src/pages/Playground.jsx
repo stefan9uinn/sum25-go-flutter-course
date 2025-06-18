@@ -1,33 +1,79 @@
 import { PlaygroundBar } from "../components/PlaygroundBar";
-import TableSchema from "../components/TableSchema";
+import SchemaWrapper from "../components/SchemaWrapper";
 
 export default function Playground() {
-  const schema = {
-    name: "test",
-    columns: [
-      {
-        name: "id",
-        type: "SERIAL",
-        attrs: "PRIMARY KEY",
-      },
-      {
-        name: "name",
-        type: "VARCHAR(30)",
-        attrs: "NOT NULL",
-      },
-      {
-        name: "age",
-        type: "INTEGER",
-        attrs: "DEFAULT 18",
-      },
-    ],
-  };
+  const schemas = [
+    {
+      name: "students",
+      columns: [
+        {
+          name: "id",
+          type: "SERIAL",
+          attrs: "PRIMARY KEY",
+        },
+        {
+          name: "name",
+          type: "VARCHAR(30)",
+          attrs: "NOT NULL",
+        },
+        {
+          name: "age",
+          type: "INTEGER",
+          attrs: "DEFAULT 18",
+        },
+        {
+          name: "email",
+          type: "TEXT",
+        },
+      ],
+    },
+    {
+      name: "grades",
+      columns: [
+        {
+          name: "id",
+          type: "SERIAL",
+          attrs: "PRIMARY KEY",
+        },
+        {
+          name: "grade",
+          type: "INTEGER",
+          attrs: "NOT NULL",
+        },
+        {
+          name: "studentId",
+          type: "INTEGER",
+          attrs: "FOREIGN KEY students",
+        },
+      ],
+    },
+
+    {
+      name: "teachers",
+      columns: [
+        {
+          name: "id",
+          type: "SERIAL",
+          attrs: "PRIMARY KEY",
+        },
+        {
+          name: "name",
+          type: "VARCHAR(50)",
+          attrs: "NOT NULL",
+        },
+        {
+          name: "class",
+          type: "TEXT",
+        },
+      ],
+    },
+  ];
 
   return (
     <div>
       <PlaygroundBar />
       <div className="mono">
-        <TableSchema schema={schema} />
+        <SchemaWrapper schemas={schemas} />
       </div>
     </div>
   );
