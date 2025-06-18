@@ -6,6 +6,8 @@ import Code from "./components/Code";
 import Home from "./components/Home";
 import ClassRooms from "./components/Classrooms";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
+import { getHello } from "./api";
+
 
 class App extends React.Component {
   constructor(props) {
@@ -17,7 +19,8 @@ class App extends React.Component {
         password: "",
         needMemorizing: false,
       },
-      isLogin: false
+      isLogin: false,
+      backendMessage: "",
     };
     this.setPage = this.setPage.bind(this);
     this.setUser = this.setUser.bind(this);
@@ -48,7 +51,9 @@ class App extends React.Component {
         return (
           <div>
             <Home />
-          </div>);
+            <div>Backend says: {this.state.backendMessage}</div>
+          </div>
+        );
       case "classrooms":
         return (
           <div>
@@ -105,6 +110,12 @@ class App extends React.Component {
 
   logOut = () => {
     this.setState({ isLogin: false, user: { login: "", password: "", needMemorizing: false }, page: "home" });
+  }
+
+  componentDidMount() {
+  getHello()
+    .then((data) => this.setState({ backendMessage: data.message }))
+    .catch((err) => console.error("Failed to fetch backend message", err));
   }
 }
 
