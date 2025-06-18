@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend/core:/app
+      - ./backend:/app
     ports:
       - "8000:8000"
     depends_on:

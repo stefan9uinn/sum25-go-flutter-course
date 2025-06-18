@@ -7,7 +7,7 @@ export async function getHello() {
 }
 
 export async function getCode(text) {
-  const res = await fetch(`${BASE_URL}/api/getit/`, {
+  const res = await fetch(`${BASE_URL}/api/chroma_query/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

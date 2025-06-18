@@ -1,15 +1,25 @@
+import json
 from django.http import JsonResponse
-from ChromaEngine import ChromaEngine, QueryParser
+from engines.ChromaEngine import ChromaEngine, QueryParser
 import time
+from django.views.decorators.csrf import csrf_exempt
 
+@csrf_exempt
 def handle_query(request):
     user_id = 1
     if request.method != "POST":
         return JsonResponse({"error": "POST required"}, status=400)
     
-    query_text = request.POST.get("code")
+    try:
+        data = json.loads(request.body)
+        query_text = data.get("code")
+    except Exception:
+        query_text = None
+
     if not query_text:
         return JsonResponse({"error": "Missing query"}, status=400)
+    
+    print(f"Received query: {query_text}")
     
     try:
         start_time = time.time()
