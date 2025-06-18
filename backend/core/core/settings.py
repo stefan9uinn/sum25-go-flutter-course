@@ -91,6 +91,11 @@ DATABASES = {
     }
 }
 
+CORS_ALLOW_HEADERS = [
+    'content-type',
+    'authorization',
+    'data',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators

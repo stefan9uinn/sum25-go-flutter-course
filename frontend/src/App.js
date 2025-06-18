@@ -26,7 +26,7 @@ class App extends React.Component {
     this.setUser = this.setUser.bind(this);
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
+    this.texting = this.texting.bind(this);
     this.pageRef = {};
   }
 
@@ -39,12 +39,12 @@ class App extends React.Component {
   };
 
   getPageRef = (page) => {
-  if (!this.pageRefs) this.pageRefs = {};
-  if (!this.pageRefs[page]) {
-    this.pageRefs[page] = React.createRef();
-  }
-  return this.pageRefs[page];
-};
+    if (!this.pageRefs) this.pageRefs = {};
+    if (!this.pageRefs[page]) {
+      this.pageRefs[page] = React.createRef();
+    }
+    return this.pageRefs[page];
+  };
 
   renderContent() {
     switch (this.state.page) {
@@ -53,7 +53,7 @@ class App extends React.Component {
           <div>
             <Home />
             <div>Backend says: {() => {
-              this.componentDidMount();
+              this.texting();
               return this.state.backendMessage;
             }}</div>
           </div>
@@ -66,12 +66,12 @@ class App extends React.Component {
       case "code":
         return (
           <div>
-            <Code output={''}/>
+            <Code output={''} />
           </div>);
       case "acc":
         return (
           <div>
-            <Account user={this.state.user} logOut={this.logOut}/>
+            <Account user={this.state.user} logOut={this.logOut} />
           </div>);
       default:
         return <div>Page not found</div>;
@@ -116,10 +116,10 @@ class App extends React.Component {
     this.setState({ isLogin: false, user: { login: "", password: "", needMemorizing: false }, page: "home" });
   }
 
-  componentDidMount() {
-  getHello()
-    .then(data => console.log(data))
-    .catch((err) => console.error("Failed to fetch backend message", err));
+  texting = () => {
+    getHello()
+    .then(data => this.setState({ backendMessage: data.message }))
+    .catch(err => console.error("Failed to fetch backend message", err));
   }
 }
 

@@ -25,9 +25,15 @@ from rest_framework.response import Response
 def hello_world(request):
     return Response({"message": "Hello from Django!"})
 
+@api_view(['POST'])
+def getIt(request):
+    data = request.data
+    return Response({"message": "Data received!", "code": data.get("code")})
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/hello/', hello_world), 
+    path('api/getit/', getIt),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
