@@ -21,6 +21,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from rest_framework.response import Response
 from engines.views import handle_query
+from engines.views import handle_query
 
 @api_view(['GET'])
 def hello_world(request):
