@@ -1,9 +1,12 @@
 # Database-Playground
 
-To deploy the project
+To deploy the project locally:<br>
+docker-compose up --build
 
-1) Navigate to backend directory
-2) Execute:
-   - cp -r ../frontend ./frontend
-   - (sudo) docker build -t django-debug .
-   - (sudo) docker run -p 8000:8000 -it --name django-app django-debug
+To deploy the project on the server:<br>
+docker-compose build --build-arg REACT_APP_API_URL=http://your-server-ip:8000<br>
+docker-compose up
+
+If you want to build only frontend:<br>
+docker-compose build --build-arg REACT_APP_API_URL=http://your-server-ip:8000 frontend<br>
+Then with builded backend: docker-compose up

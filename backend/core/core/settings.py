@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'account',
     'class',
     'corsheaders',
+    'engines',
 ]
 
 MIDDLEWARE = [
@@ -56,9 +57,18 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
+    "http://89.169.182.245:3000",
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://89.169.182.245:3000",
 ]
 
 ROOT_URLCONF = 'core.urls'
@@ -91,6 +101,25 @@ DATABASES = {
     }
 }
 
+CORS_ALLOW_CREDENTIALS = True
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'Content-Type',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'data',  
+    'code',
+]
+
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary for debugging
+CORS_DEBUG = True  # Show CORS errors in console
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
