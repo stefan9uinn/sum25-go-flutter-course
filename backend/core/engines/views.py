@@ -8,11 +8,10 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @api_view(['POST'])
 def chroma_query(request):
-    user_id = 1
-
     try:
         data = json.loads(request.body)
         query_text = data.get("code")
+        user_id = data.get("user_id")
     except Exception:
         query_text = None
 
