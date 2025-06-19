@@ -5,7 +5,7 @@ from typing import List, Dict, Union, Any
 import os
 
 class ChromaEngine:
-    def __init__(self, user_id: int, persist_dir: str = "chroma_databases"):
+    def __init__(self, user_id: int, persist_dir: str = "playground/chroma_persist"):
         self.user_id = user_id
         self.persist_dir = persist_dir
         self.collection_name = f"user_{user_id}_collection"
