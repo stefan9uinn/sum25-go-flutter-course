@@ -118,6 +118,9 @@ CORS_ALLOW_HEADERS = [
     'code',
 ]
 
+CORS_ALLOW_ALL_ORIGINS = True  # Temporary for debugging
+CORS_DEBUG = True  # Show CORS errors in console
+
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
