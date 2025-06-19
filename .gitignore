@@ -179,5 +179,9 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
+postgres_data
+mysql_data
+mongo_data
+
 # Playground
 playground/
