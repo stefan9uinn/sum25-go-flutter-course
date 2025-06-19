@@ -20,13 +20,11 @@ class App extends React.Component {
         needMemorizing: false,
       },
       isLogin: false,
-      backendMessage: "",
     };
     this.setPage = this.setPage.bind(this);
     this.setUser = this.setUser.bind(this);
     this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
-    this.texting = this.texting.bind(this);
     this.pageRef = {};
   }
 
@@ -52,10 +50,6 @@ class App extends React.Component {
         return (
           <div>
             <Home />
-            <div>Backend says: {() => {
-              this.texting();
-              return this.state.backendMessage;
-            }}</div>
           </div>
         );
       case "classrooms":
@@ -84,21 +78,23 @@ class App extends React.Component {
 
     return (
       <div className="app-container">
-        <Header setPage={this.setPage} current={this.state.page} setUser={this.setUser} setLogin={this.login} checkLogin={this.checkLogin()} />
-        <div style={{ flex: 1, position: "relative" }}>
-          <SwitchTransition>
-            <CSSTransition
-              key={page}
-              timeout={300}
-              classNames="page-fade"
-              unmountOnExit
-              nodeRef={nodeRef}
-            >
-              <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
-                {this.renderContent()}
-              </div>
-            </CSSTransition>
-          </SwitchTransition>
+        <div className="app-container">
+          <Header setPage={this.setPage} current={this.state.page} setUser={this.setUser} setLogin={this.login} checkLogin={this.checkLogin()} />
+          <div >
+            <SwitchTransition>
+              <CSSTransition
+                key={page}
+                timeout={300}
+                classNames="page-fade"
+                unmountOnExit
+                nodeRef={nodeRef}
+              >
+                <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
+                  {this.renderContent()}
+                </div>
+              </CSSTransition>
+            </SwitchTransition>
+          </div>
         </div>
         <Footer />
       </div>
@@ -114,12 +110,6 @@ class App extends React.Component {
 
   logOut = () => {
     this.setState({ isLogin: false, user: { login: "", password: "", needMemorizing: false }, page: "home" });
-  }
-
-  texting = () => {
-    getHello()
-    .then(data => this.setState({ backendMessage: data.message }))
-    .catch(err => console.error("Failed to fetch backend message", err));
   }
 }
 

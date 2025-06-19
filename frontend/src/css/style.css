@@ -8,7 +8,7 @@
 
 .footeree {
     margin-top: 20px;
-    padding: 10px 0;
+    padding: 10px;
     background-color: #0d1117 !important;
     color: #fff !important;
     text-align: center;
@@ -222,7 +222,7 @@ body {
 
 .code-textarea {
     width: 500px;
-    height: 600px;
+    height: 500px;
     background-color: #161b22;
     color: #fff;
     font-family: 'Noto Sans', sans-serif;
@@ -247,7 +247,41 @@ textarea:active {
 
 .code-output {
     width: 500px;
-    height: 400px;
+    height: 350px;
+    max-height: 350px;
+    overflow-y: auto;
+    background-color: #161b22;
+    color: #fff;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 400;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #51CB63;
+}
+
+.code-output::-webkit-scrollbar {
+    width: 8px; /* Ширина скроллбара */
+}
+
+.code-output::-webkit-scrollbar-track {
+    background: #161b22; /* Цвет трека скроллбара */
+    border-radius: 8px; /* Скругление трека */
+    margin: 2px;
+}
+
+.code-output::-webkit-scrollbar-thumb {
+    background: #51CB63; /* Цвет ползунка */
+    border-radius: 8px; /* Скругление ползунка */
+    border: 2px solid #161b22; /* Отступ между ползунком и треком */
+}
+
+.code-output::-webkit-scrollbar-thumb:hover {
+    background: #3fa94d; /* Цвет ползунка при наведении */
+}
+
+.code-result{
+    width: 500px;
+    height: 82px;
     background-color: #161b22;
     color: #fff;
     font-family: 'Noto Sans', sans-serif;
@@ -259,7 +293,7 @@ textarea:active {
 
 .code-text {
     color: #51CB63;
-    font-size: 17px;
+    font-size: 10px;
     font-family: 'Noto Sans', sans-serif;
     font-weight: 200;
 }
