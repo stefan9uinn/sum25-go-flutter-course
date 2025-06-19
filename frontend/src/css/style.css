@@ -242,7 +242,6 @@ textarea:focus,
 textarea:active {
     outline: none;
     border-color: #51CB63;
-    /* или любой ваш цвет */
     box-shadow: none;
 }
 

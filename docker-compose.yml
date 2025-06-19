@@ -5,7 +5,7 @@ services:
     build:
       context: ./backend
     volumes:
-      - ./backend/core:/app
+      - ./backend:/app
     ports:
       - "8000:8000"
     depends_on:
@@ -22,6 +22,6 @@ services:
       dockerfile: Dockerfile
       target: build
       args:
-        REACT_APP_API_URL: http://backend:8000  # important: use backend service name!
+        REACT_APP_API_URL: http://localhost:8000
     ports:
       - "3000:3000"

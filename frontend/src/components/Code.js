@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Typography, Upload } from 'antd';
 import { message, Select } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
+import {getCode} from '../api'; // Assuming getCode is defined in api.js
 
 const uploadProps = {
   name: 'file',
@@ -18,6 +19,12 @@ const uploadProps = {
 };
 
 class Code extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      code: ""
+    }
+  }
   render() {
     return (
       <div className="code-container">
@@ -25,14 +32,14 @@ class Code extends React.Component {
           <p className="account-text">Write your code or <span><Upload {...uploadProps}>
             <Button icon={<UploadOutlined />} className='my-orange-button-outline' > Import File</Button>
           </Upload></span></p>
-          <textarea className='code-textarea' placeholder='Will your code appear here?'></textarea>
+          <textarea className='code-textarea' placeholder='Will your code appear here?' onChange={(data) => this.setState({ code: data.target.value })}></textarea>
         </main>
         <aside className="code-aside">
           <p className="account-text">Output:</p>
           <div className="code-output">
             <Typography.Text className='code-text'>Your output will appear here... Maybe...</Typography.Text>
           </div>
-          <Button className='my-orange-button-outline' type="primary" style={{ marginTop: '10px', marginLeft: '0px' }}>Run Code</Button>
+          <Button className='my-orange-button-outline' type="primary" style={{ marginTop: '10px', marginLeft: '0px' }} onClick={() => this.getIt(this.state.code)}>Run Code</Button>
           <Select
             className='code-select'
             defaultValue="PostgreSQL"
@@ -47,6 +54,11 @@ class Code extends React.Component {
         </aside>
       </div>
     );
+  }
+  getIt(text) {
+    getCode(text)
+      .then(data => console.log(data))
+      .catch(error => console.error('Error:', error));
   }
 }
 
