@@ -16,15 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from rest_framework.decorators import api_view
 from django.conf import settings
 from django.conf.urls.static import static
-from rest_framework.response import Response
-from engines.views import handle_query
+from engines.views import chroma_query
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/chroma_query/', handle_query), 
+    path('api/chroma_query/', chroma_query), 
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)

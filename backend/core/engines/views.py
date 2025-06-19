@@ -1,15 +1,15 @@
 import json
-from django.http import JsonResponse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 from engines.ChromaEngine import ChromaEngine, QueryParser
 import time
 from django.views.decorators.csrf import csrf_exempt
 
 @csrf_exempt
-def handle_query(request):
+@api_view(['POST'])
+def chroma_query(request):
     user_id = 1
-    if request.method != "POST":
-        return JsonResponse({"error": "POST required"}, status=400)
-    
+
     try:
         data = json.loads(request.body)
         query_text = data.get("code")
@@ -17,7 +17,7 @@ def handle_query(request):
         query_text = None
 
     if not query_text:
-        return JsonResponse({"error": "Missing query"}, status=400)
+        return Response({"error": "Missing query"}, status=400)
     
     print(f"Received query: {query_text}")
     
@@ -59,7 +59,7 @@ def handle_query(request):
         db_state = engine.get_db_state()
         execution_time = time.time() - start_time
         
-        return JsonResponse({
+        return Response({
             "command": command,
             "result": result,
             "db_state": db_state,
@@ -68,4 +68,4 @@ def handle_query(request):
         })
     
     except Exception as e:
-        return JsonResponse({"error": str(e)}, status=400)
+        return Response({"error": str(e)}, status=400)
