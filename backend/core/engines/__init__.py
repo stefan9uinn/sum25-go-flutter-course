@@ -1,5 +1,5 @@
-from core.engines.SQLEngine import SQLEngine
-from core.engines.PostgresEngine import PostgresEngine
+from .SQLEngine import SQLEngine
+from .PostgresEngine import PostgresEngine
 
 __all__ = [
     "SQLEngine",
