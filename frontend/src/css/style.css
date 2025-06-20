@@ -154,7 +154,7 @@ body {
     background-color: #161b22 !important;
     border: none !important;
     padding: 0 !important;
-    vertical-align: middle;
+    vertical-align: top;
 }
 
 .my-danger-button {
@@ -257,29 +257,39 @@ textarea:active {
 .code-output::-webkit-scrollbar,
 .code-result::-webkit-scrollbar, 
 .code-textarea::-webkit-scrollbar {
-    width: 0px; /* Ширина скроллбара */
+    width: 0px;
 }
 
 .code-output::-webkit-scrollbar-track 
 .code-result::-webkit-scrollbar, 
 .code-textarea::-webkit-scrollbar {
-    background: #51CB63; /* Цвет трека скроллбара */
-    border-radius: 8px; /* Скругление трека */
+    background: #51CB63; 
+    border-radius: 8px;
     margin: 2px;
 }
 
 .code-output::-webkit-scrollbar-thumb 
 .code-result::-webkit-scrollbar, 
 .code-textarea::-webkit-scrollbar {
-    background: #51CB63; /* Цвет ползунка */
-    border-radius: 8px; /* Скругление ползунка */
-    border: 2px solid #51CB63; /* Отступ между ползунком и треком */
+    background: #51CB63; 
+    border-radius: 8px; 
+    border: 2px solid #51CB63;
 }
 
 .code-output::-webkit-scrollbar-thumb:hover 
 .code-result::-webkit-scrollbar, 
 .code-textarea::-webkit-scrollbar {
-    background: #3fa94d; /* Цвет ползунка при наведении */
+    background: #3fa94d; 
+}
+
+.logo-icon {
+    font-size: 40px;
+    font-weight: 100;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    color: #51CB63;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 2px #51CB63 !important;
 }
 
 .code-result{

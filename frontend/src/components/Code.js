@@ -25,50 +25,7 @@ class Code extends React.Component {
       code: "",
       chosenDb: "Choose DB",
       response: {
-        command: "ADD",
-        db_state: [
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' },
-          }, {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' }
-          },
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: null
-          },
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' }
-          },
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' }
-          },
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' }
-          },
-          {
-            document: "Векторные БД используют для поиска похожих объектов",
-            id: "doc_1750330767462",
-            metadata: { Topic: 'DB', Type: 'Theory' }
-          },
-        ],
-        documents_count: 3,
-        execution_time: "0.0284 seconds",
-        result: {
-          status: "added",
-          document_id: "doc_1750330767462",
-        }
-      },
+        },
     }
   }
   render() {

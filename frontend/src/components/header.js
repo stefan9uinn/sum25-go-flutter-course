@@ -1,8 +1,8 @@
 import React from "react"
 import { Button } from "antd";
-import logo from "../img/icon100.png";
 import MyModal from "./modal";
-import { FaCode, FaBook } from "react-icons/fa";
+import { FaCode, FaBook} from "react-icons/fa";
+import { HiDatabase, HiOutlineDatabase } from "react-icons/hi";
 import { MdAccountCircle } from "react-icons/md";
 
 class Header extends React.Component {
@@ -12,16 +12,18 @@ class Header extends React.Component {
     this.state = {
       isModalOpen: false,
       activeButton: 'home',
+      hoveredButton: <HiDatabase className="logo-icon"/>,
     };
     this.handleButtonClick = this.handleButtonClick.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
+    this.handleMouseEnter = this.handleMouseEnter.bind(this);
 
   }
   render() {
     return (
       <header className="header">
         <span className="header-logo">
-          <Button className="logo-button-outline" onClick={() => this.handleButtonClick("home")}><img src={logo} alt="Logo" style={{ height: 32 }} className="header-logo" /></Button>
+          <Button className="logo-button-outline" onClick={() => this.handleButtonClick("home")} onMouseEnter={this.handleLogoHoverEnter} onMouseLeave={this.handleLogoHoverLeave}>{this.state.hoveredButton}</Button>
           <Button
             variant="solid"
             className={this.state.activeButton === "code" ? "my-orange-button-solid" : "my-orange-button-outline"}
@@ -65,15 +67,41 @@ class Header extends React.Component {
     }
   }
 
+  handleLogoHoverEnter = () => {
+    if (this.state.activeButton === "home") {
+      this.setState({ hoveredButton: <HiDatabase className="logo-icon" /> });
+    }
+    else {
+      this.setState({ hoveredButton: <HiDatabase className="logo-icon" /> });
+    }
+  };
+
+  handleLogoHoverLeave = () => {
+    if (this.state.activeButton === "home") {
+      this.setState({ hoveredButton: <HiDatabase className="logo-icon" /> });
+    }
+    else {
+      this.setState({ hoveredButton: <HiOutlineDatabase className="logo-icon" /> });
+    }
+  };
+
   handleButtonClick = (button) => {
     if (button === "signin") {
       this.lastActiveButton = this.state.activeButton;
+      this.setState({ hoveredButton: <HiOutlineDatabase className="logo-icon" /> });
       this.setState({ isModalOpen: true, activeButton: "signin" });
     } else {
       this.setState({ activeButton: button });
+      if (button === "home") {
+        this.setState({ hoveredButton: <HiDatabase className="logo-icon" /> });
+      }
+      else{
+        this.setState({ hoveredButton: <HiOutlineDatabase className="logo-icon" /> });
+      }
       this.props.setPage(button);
     }
   };
+
   handleCancel = () => {
     this.setState({ isModalOpen: false, activeButton: this.lastActiveButton })
   };
@@ -81,6 +109,14 @@ class Header extends React.Component {
   login = () => {
     this.props.setLogin();
     this.setState({ isModalOpen: false, activeButton: this.lastActiveButton });
+  };
+  handleMouseEnter = () => {
+    if (this.state.activeButton === "home") {
+      this.setState({ hoveredButton: <HiDatabase className="logo-icon" /> });
+    }
+    else{
+      this.setState({ hoveredButton: <HiOutlineDatabase className="logo-icon" /> });
+    }
   };
 }
 
