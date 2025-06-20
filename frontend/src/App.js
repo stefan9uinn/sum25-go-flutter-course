@@ -6,7 +6,7 @@ import Code from "./components/Code";
 import Home from "./components/Home";
 import ClassRooms from "./components/Classrooms";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-import { getHello } from "./api";
+
 const BASE_URL = process.env.REACT_APP_API_URL || "";
 
 class App extends React.Component {
@@ -15,25 +15,20 @@ class App extends React.Component {
     this.state = {
       page: "home",
       user: {
-        login: "",
-        password: "",
-        needMemorizing: false,
+        login: this.getCookie("login") || "",
+        password: this.getCookie("password") || "",
+        needMemorizing: this.getCookie("needMemorizing") === "true" ? true : false,
       },
-      isLogin: false,
+      isLogin: this.getCookie("login") ? true : false,
     };
     this.setPage = this.setPage.bind(this);
-    this.setUser = this.setUser.bind(this);
-    this.login = this.login.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.updateLoginState = this.updateLoginState.bind(this);
     this.pageRef = {};
   }
 
-  setUser = (user) => {
-    this.setState({ user: user });
-  }
-
   setPage = (page) => {
-    this.setState({ page });
+    this.setState({ page: page });
   };
 
   getPageRef = (page) => {
@@ -79,7 +74,7 @@ class App extends React.Component {
     return (
       <div className="app-container">
         <div className="app-container">
-          <Header setPage={this.setPage} current={this.state.page} setUser={this.setUser} setLogin={this.login} checkLogin={this.checkLogin()} />
+          <Header setPage={this.setPage} current={this.state.page} updateLogIn={this.updateLoginState} logIn={this.logIn} setCookie={this.setCookie} checkLogin={this.state.isLogin} />
           <div >
             <SwitchTransition>
               <CSSTransition
@@ -101,15 +96,61 @@ class App extends React.Component {
     );
   }
 
-  checkLogin = () => {
-    return this.state.isLogin;
+  logIn = (login, password, needMemorizing) => {
+    this.setCookie("login", login, 7);
+    this.setCookie("password", password, 7);
+    this.setCookie("needMemorizing", needMemorizing, 7);
+    this.setPage("home");
+    this.setState({isLogin: true})
+    
   }
-  login = () => {
-    this.setState({ isLogin: true });
-  };
+
 
   logOut = () => {
-    this.setState({ isLogin: false, user: { login: "", password: "", needMemorizing: false }, page: "home" });
+    this.deleteCookie("login");
+    this.deleteCookie("password");
+    this.deleteCookie("needMemorizing");
+    this.updateLoginState();
+    this.setPage("home");
+  }
+
+  setCookie = (name, value, options = {}) => {
+    let newEntryBody = `${encodeURIComponent(name)}=${encodeURIComponent(value)}`;
+
+    const optionsAsString = Object.entries(options)
+      .map(([key, val]) => `${key}=${val}`)
+      .join("; ");
+
+    if (optionsAsString) {
+      newEntryBody += `; ${optionsAsString}`;
+    }
+
+    document.cookie = newEntryBody;
+  };
+
+  deleteCookie = (name) => {
+    this.setCookie(name, "", { 'max-age': -1 });
+    this.updateLoginState();
+  }
+
+
+  updateLoginState = () => {
+    const login = this.getCookie("login");
+    const password = this.getCookie("password");
+    this.setState({
+    isLogin: !!login && !!password,
+  });
+  };
+
+
+  getCookie = (name) => {
+    for (const entryString of document.cookie.split(";")) {
+      const [entryName, entryValue] = entryString.split("=");
+      if (decodeURIComponent(entryName) === name) {
+        return entryValue
+      }
+    }
+    return null;
   }
 }
 

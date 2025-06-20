@@ -62,13 +62,6 @@ class Account extends React.Component {
       </div>
     );
   }
-
-  checkLogin = () => {
-    return this.state.isLogin;
-  }
-  login = () => {
-    this.setState({ isLogin: true });
-  };
 }
 
 export default Account;

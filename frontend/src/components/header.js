@@ -53,10 +53,16 @@ class Header extends React.Component {
                 <span style={{ position: "relative", top: "-1px" }}>Account</span> <MdAccountCircle />
               </span>
             </Button>}
-          <MyModal open={this.state.isModalOpen} onCancel={this.handleCancel} onOk={this.login} footer={null} setUser={this.props.setUser} title="Sing In" />
+          <MyModal open={this.state.isModalOpen} logIn={this.props.logIn} setPage={this.props.setPage} onCancel={this.handleCancel} updateLogIn={this.props.updateLogIn} setCookie={this.props.setCookie} footer={null} setUser={this.props.setUser} title="Sing In" />
         </div>
       </header>
     )
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.current !== this.props.current) {
+      this.setState({ activeButton: this.props.current });
+    }
   }
 
   handleButtonClick = (button) => {
@@ -68,9 +74,8 @@ class Header extends React.Component {
       this.props.setPage(button);
     }
   };
-
   handleCancel = () => {
-    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton });
+    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton })
   };
 
   login = () => {

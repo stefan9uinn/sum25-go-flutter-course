@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button, Typography, Upload } from 'antd';
-import { message, Select } from 'antd';
+import { message, Select, Divider } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { getCode } from '../api'; // Assuming getCode is defined in api.js
 
@@ -24,7 +24,51 @@ class Code extends React.Component {
     this.state = {
       code: "",
       chosenDb: "Choose DB",
-      response: {},
+      response: {
+        command: "ADD",
+        db_state: [
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' },
+          }, {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' }
+          },
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: null
+          },
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' }
+          },
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' }
+          },
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' }
+          },
+          {
+            document: "Векторные БД используют для поиска похожих объектов",
+            id: "doc_1750330767462",
+            metadata: { Topic: 'DB', Type: 'Theory' }
+          },
+        ],
+        documents_count: 3,
+        execution_time: "0.0284 seconds",
+        result: {
+          status: "added",
+          document_id: "doc_1750330767462",
+        }
+      },
     }
   }
   render() {
@@ -55,11 +99,36 @@ class Code extends React.Component {
         <aside className="code-aside">
           <p className="account-text">Current DB state:</p>
           <div className="code-output">
-            <Typography.Text className='code-text'>Document Id:</Typography.Text>
+            {Object.keys(this.state.response).length === 0 ? <Typography.Text className='code-text'>Current DB state will appear here</Typography.Text> : this.state.response.db_state.map((item, index) => {
+              return (
+                <div className="code-output-item">
+                  <Typography.Text className='code-text'>ID: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.id}</Typography.Text></Typography.Text> <br />
+                  <Typography.Text className='code-text'>Document: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.document}</Typography.Text></Typography.Text><br />
+                  {item.metadata && (
+                    <div className="metadata-fields">
+                      {Object.entries(item.metadata).map(([key, value]) => (
+                        <Typography.Text className='code-text' key={key}>
+                          {key}: <Typography.Text className='code-text' style={{ color: '#fff' }}>{value}</Typography.Text>
+                          <br/>
+                        </Typography.Text>
+                      ))}
+                    </div>
+                  )}
+                  {index !== this.state.response.db_state.length - 1 && <Divider className="my-divider" />}
+                </div>
+              );
+            })}
+
           </div>
           <p className="account-text" style={{ marginTop: '10px' }} >Request Result:</p>
           <div className="code-result">
-            <Typography.Text className='code-text'></Typography.Text>
+            {Object.keys(this.state.response).length === 0 ? <Typography.Text className='code-text'>Request result will appear here</Typography.Text> : 
+    
+                <div className="code-output-item">
+                  <Typography.Text className='code-text'>State: <Typography.Text className='code-text' style={{ color: '#fff' }}>{this.state.response.result.status} {this.state.response.result.document_id}</Typography.Text></Typography.Text> <br />
+                  <Typography.Text className='code-text'>Document: <Typography.Text className='code-text' style={{ color: '#fff' }}>{this.state.response.execution_time}</Typography.Text></Typography.Text><br />
+                </div>
+            }
           </div>
         </aside>
       </div>
