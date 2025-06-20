@@ -29,7 +29,6 @@
     font-family: 'Noto Sans', sans-serif;
     border-color: #51CB63;
     margin-left: 15px;
-    transform: 1000ms ease;
 }
 
 .my-orange-button-solid {
@@ -38,7 +37,6 @@
     font-family: 'Noto Sans', sans-serif;
     border-color: #51CB63;
     margin-left: 15px;
-    transform: 1000ms ease;
 }
 
 
@@ -103,7 +101,6 @@ body {
     background: #51CB63 !important;
     color: #fff !important;
     border-color: #51CB63 !important;
-    transform: scale(1.1);
 
 }
 
@@ -166,14 +163,12 @@ body {
     font-family: 'Noto Sans', sans-serif;
     border-color: #c01619 !important;
     margin-left: 15px;
-    transform: 1000ms ease;
 }
 
 .my-danger-button:hover {
     background: #c01619 !important;
     color: #fff !important;
     border-color: #c01619 !important;
-    transform: scale(1.1);
 }
 
 .page-fade-enter {
