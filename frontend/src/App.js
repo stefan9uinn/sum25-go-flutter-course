@@ -23,6 +23,7 @@ class App extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.updateLoginState = this.updateLoginState.bind(this);
     this.pageRef = {};
+    this.handleHomeButtonClick = this.handleHomeButtonClick.bind(this)
   }
 
   setPage = (page) => {
@@ -42,7 +43,7 @@ class App extends React.Component {
       case "home":
         return (
           <div>
-            <Home />
+            <Home handleButtonClick={this.handleHomeButtonClick} />
           </div>
         );
       case "classrooms":
@@ -70,9 +71,18 @@ class App extends React.Component {
     const nodeRef = this.getPageRef(page);
     return (
       <div className="app-container">
-        <div className="main-content">
-          <Header setPage={this.setPage} current={this.state.page} updateLogIn={this.updateLoginState} logIn={this.logIn} setCookie={this.setCookie} checkLogin={this.state.isLogin} />
-          <div >
+        <div className="app-container">
+          {this.state.page !== "home" && (
+            <Header
+              setPage={this.setPage}
+              current={this.state.page}
+              updateLogIn={this.updateLoginState}
+              logIn={this.logIn}
+              setCookie={this.setCookie}
+              checkLogin={this.state.isLogin}
+            />
+          )}
+          <div>
             <SwitchTransition>
               <CSSTransition
                 key={page}
@@ -92,6 +102,10 @@ class App extends React.Component {
       </div>
     );
   }
+
+  handleHomeButtonClick = (page) => {
+    this.setPage(page);
+  };
 
   logIn = (login, password, needMemorizing) => {
     this.setCookie("login", login, 7);
