@@ -71,7 +71,7 @@ class App extends React.Component {
     const nodeRef = this.getPageRef(page);
     return (
       <div className="app-container">
-        <div className="app-container">
+        <div class="main-content">
           {this.state.page !== "home" && (
             <Header
               setPage={this.setPage}
