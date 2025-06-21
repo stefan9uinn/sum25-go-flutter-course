@@ -13,8 +13,8 @@ class App extends React.Component {
     this.state = {
       page: "home",
       user: {
-        login: this.getCookie("login") || "",
-        password: this.getCookie("password") || "",
+        login: this.getCookie("login"),
+        password: this.getCookie("password"),
         needMemorizing: this.getCookie("needMemorizing") === "true" ? true : false,
       },
       isLogin: this.getCookie("login") ? true : false,
@@ -23,6 +23,7 @@ class App extends React.Component {
     this.logOut = this.logOut.bind(this);
     this.updateLoginState = this.updateLoginState.bind(this);
     this.pageRef = {};
+    this.handleHomeButtonClick = this.handleHomeButtonClick.bind(this)
   }
 
   setPage = (page) => {
@@ -42,7 +43,7 @@ class App extends React.Component {
       case "home":
         return (
           <div>
-            <Home />
+            <Home handleButtonClick={this.handleHomeButtonClick} />
           </div>
         );
       case "classrooms":
@@ -68,12 +69,20 @@ class App extends React.Component {
   render() {
     const page = this.state.page;
     const nodeRef = this.getPageRef(page);
-
     return (
       <div className="app-container">
         <div className="app-container">
-          <Header setPage={this.setPage} current={this.state.page} updateLogIn={this.updateLoginState} logIn={this.logIn} setCookie={this.setCookie} checkLogin={this.state.isLogin} />
-          <div >
+          {this.state.page !== "home" && (
+            <Header
+              setPage={this.setPage}
+              current={this.state.page}
+              updateLogIn={this.updateLoginState}
+              logIn={this.logIn}
+              setCookie={this.setCookie}
+              checkLogin={this.state.isLogin}
+            />
+          )}
+          <div>
             <SwitchTransition>
               <CSSTransition
                 key={page}
@@ -93,6 +102,10 @@ class App extends React.Component {
       </div>
     );
   }
+
+  handleHomeButtonClick = (page) => {
+    this.setPage(page);
+  };
 
   logIn = (login, password, needMemorizing) => {
     this.setCookie("login", login, 7);
@@ -153,8 +166,12 @@ class App extends React.Component {
         return entryValue
       }
     }
-    return null;
+    return undefined;
   }
+
+  getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 }
 
 export default App;

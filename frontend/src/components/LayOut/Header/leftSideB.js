@@ -1,37 +1,25 @@
 import React from "react"
 import { Button } from "antd";
-import MyModal from "./modal";
-import { FaBook } from "react-icons/fa";
-import { MdAccountCircle } from "react-icons/md";
+import { FaCode } from "react-icons/fa";
+import logo from "../../../img/icon100.png"; 
 
-class LeftSideB extends React.Component {
+class RightSideB extends React.Component {
     render() {
         return (
-            <div style={{ display: "flex", alignItems: "center" }}>
+            <span className="header-logo">
+                <Button className="logo-button-outline" onClick={() => this.props.handleButtonClick("home")}><img src={logo} alt="Logo" style={{ height: 32 }} className="header-logo" /></Button>
                 <Button
                     variant="solid"
-                    className={this.props.activeButton === "classrooms" ? "my-orange-button-solid" : "my-orange-button-outline"}
-                    onClick={() => this.props.handleButtonClick("classrooms")}
+                    className={this.props.activeButton === "code" ? "my-orange-button-solid" : "my-orange-button-outline"}
+                    onClick={() => this.props.handleButtonClick("code")}
                 >
                     <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                        <span style={{ position: "relative", top: "-1px" }}>Classrooms</span> <FaBook />
+                        <span style={{ position: "relative", top: "-1px" }}>Code</span> <FaCode />
                     </span>
                 </Button>
-                {!this.props.checkLogin ?
-                    <Button variant="solid" className={this.props.activeButton === "signin" ? "my-orange-button-solid" : "my-orange-button-outline"} onClick={() => this.props.handleButtonClick("signin")}><span style={{ position: "relative", top: "-1px" }}>Sign In</span></Button> :
-                    <Button
-                        variant="solid"
-                        className={this.props.activeButton === "acc" ? "my-orange-button-solid" : "my-orange-button-outline"}
-                        onClick={() => this.props.handleButtonClick("acc")}
-                    >
-                        <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-                            <span style={{ position: "relative", top: "-1px" }}>Account</span> <MdAccountCircle />
-                        </span>
-                    </Button>}
-                <MyModal open={this.props.isModalOpen} logIn={this.props.logIn} setPage={this.props.setPage} onCancel={this.props.handleCancel} updateLogIn={this.props.updateLogIn} setCookie={this.props.setCookie} footer={null} setUser={this.props.setUser} title="Sing In" />
-            </div>
+            </span>
         );
     }
 }
 
-export default LeftSideB;
+export default RightSideB;

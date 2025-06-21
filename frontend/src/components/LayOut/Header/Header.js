@@ -1,6 +1,6 @@
 import React from "react"
-import RightSideB from "./rightSideB";
-import LeftSideB from "./leftSideB";
+import RightSideB from "./leftSideB";
+import LeftSideB from "./rightSideB";
 import "./Header.css";
 
 class Header extends React.Component {
