@@ -78,6 +78,11 @@
     padding: 0;
 }
 
+
+.main-content {
+  flex: 1;
+}
+
 .app-container {
     min-height: 100vh;
     display: flex;
@@ -101,11 +106,12 @@
 }
 
 
-body {
+html, body {
     background-color: #0d1117;
     color: rgb(255, 255, 255);
     font-family: 'Noto Sans', sans-serif;
     font-weight: 700;
+    height: 100%;
 }
 
 .my-orange-button-outline:hover,
