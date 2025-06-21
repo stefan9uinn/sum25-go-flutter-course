@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Typography } from "antd";
+import {Typography } from "antd";
+import "./Home.css";
 
 const { Title, Paragraph, Text, Link } = Typography;
 
@@ -15,7 +16,7 @@ class Home extends React.Component {
           marginBottom: 10
         }}>Greetings!</Title>
 
-        <Paragraph className="account-text">
+        <Paragraph className="home-text">
           In the process of internal desktop applications development, many different design specs and
           implementations would be involved, which might cause designers and developers difficulties and
           duplication and reduce the efficiency of development.
@@ -29,9 +30,9 @@ class Home extends React.Component {
           marginBottom: 10
         }}>Guidelines and Resources</Title>
 
-        <Paragraph className="account-text">
+        <Paragraph className="home-text">
           We supply a series of design principles, practical patterns and high quality design resources
-          (<Text code className="account-text">Sketch</Text> and <Text code className="account-text">Axure</Text>), to help people create their product
+          (<Text code className="home-text">Sketch</Text> and <Text code className="home-text.">Axure</Text>), to help people create their product
           prototypes beautifully and efficiently.
         </Paragraph>
       </div>

@@ -1,13 +1,11 @@
 import React from "react";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Account from "./components/Account";
-import Code from "./components/Code";
-import Home from "./components/Home";
-import ClassRooms from "./components/Classrooms";
+import Footer from "./components/LayOut/footer";
+import Header from "./components/LayOut/Header/Header";
+import Account from "./components/Account/Account";
+import Code from "./components/Code/Code";
+import Home from "./components/Home/Home";
+import ClassRooms from "./components/Classrooms/Classrooms";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
-
-const BASE_URL = process.env.REACT_APP_API_URL || "";
 
 class App extends React.Component {
   constructor(props) {
@@ -55,7 +53,7 @@ class App extends React.Component {
       case "code":
         return (
           <div>
-            <Code output={''} />
+            <Code getCookie={this.getCookie}/>
           </div>);
       case "acc":
         return (
@@ -101,7 +99,12 @@ class App extends React.Component {
     this.setCookie("password", password, 7);
     this.setCookie("needMemorizing", needMemorizing, 7);
     this.setPage("home");
-    this.setState({isLogin: true})
+    let user = {
+      login: login,
+      password: password,
+      needMemorizing: needMemorizing,
+    }
+    this.setState({isLogin: true, user: user});
     
   }
 

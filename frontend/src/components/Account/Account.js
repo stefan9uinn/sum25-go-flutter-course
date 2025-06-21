@@ -1,5 +1,6 @@
 import React from "react";
 import { Button, Typography } from "antd";
+import "./Account.css";
 
 const { Title, Paragraph, Text, Link } = Typography;
 

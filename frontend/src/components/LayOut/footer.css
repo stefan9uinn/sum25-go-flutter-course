@@ -1,0 +1,10 @@
+.footeree {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #0d1117 !important;
+    color: #fff !important;
+    text-align: center;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 300;
+    font-size: 14px;
+}
