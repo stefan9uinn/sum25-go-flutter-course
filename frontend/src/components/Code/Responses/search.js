@@ -1,6 +1,6 @@
 import React from 'react';
 import { Typography, Divider } from 'antd';
-
+import { ImPointRight } from "react-icons/im";
 
 class Search extends React.Component {
 
@@ -18,14 +18,14 @@ class Search extends React.Component {
                                 {this.props.response.result.search_results.map((item, index) => {
                                     return (
                                         <div className="code-output-item">
-                                            <Typography.Text className='code-text'>-ID: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.id}</Typography.Text></Typography.Text> <br />
-                                            <Typography.Text className='code-text'>-Title: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.document}</Typography.Text></Typography.Text><br />
-                                            <Typography.Text className='code-text'>-Distance: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.distance}</Typography.Text></Typography.Text><br />
+                                            <Typography.Text className='code-text'><ImPointRight/> ID: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.id}</Typography.Text></Typography.Text> <br />
+                                            <Typography.Text className='code-text'><ImPointRight/> Title: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.document}</Typography.Text></Typography.Text><br />
+                                            <Typography.Text className='code-text'><ImPointRight/> Distance: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.distance}</Typography.Text></Typography.Text><br />
                                             {item.metadata && (
                                                 <div className="metadata-fields">
                                                     {Object.entries(item.metadata).map(([key, value]) => (
                                                         <Typography.Text className='code-text' key={key}>
-                                                            -Metadata/{key}: <Typography.Text className='code-text' style={{ color: '#fff' }}>{value}</Typography.Text>
+                                                            <ImPointRight/>Metadata/{key}: <Typography.Text className='code-text' style={{ color: '#fff' }}>{value}</Typography.Text>
                                                             <br />
                                                         </Typography.Text>
                                                     ))}

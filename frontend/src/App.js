@@ -13,8 +13,8 @@ class App extends React.Component {
     this.state = {
       page: "home",
       user: {
-        login: this.getCookie("login") || "",
-        password: this.getCookie("password") || "",
+        login: this.getCookie("login"),
+        password: this.getCookie("password"),
         needMemorizing: this.getCookie("needMemorizing") === "true" ? true : false,
       },
       isLogin: this.getCookie("login") ? true : false,
@@ -69,7 +69,6 @@ class App extends React.Component {
   render() {
     const page = this.state.page;
     const nodeRef = this.getPageRef(page);
-
     return (
       <div className="app-container">
         <div className="app-container">
@@ -167,8 +166,12 @@ class App extends React.Component {
         return entryValue
       }
     }
-    return null;
+    return undefined;
   }
+
+  getRandomInt(max) {
+  return Math.floor(Math.random() * max);
+}
 }
 
 export default App;

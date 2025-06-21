@@ -51,8 +51,7 @@ class Code extends React.Component {
       const error = {
         message: "Please try once again, there is an error in your code",
       }
-      let string = (this.props.getCookie("login") + this.props.getCookie("password")) || 1;
-      console.log("Sending request with code:", text, "and hash:", string.hashCode());
+      let string = (this.props.getCookie("login") + this.props.getCookie("password")) || "1";
       getCode(text, string.hashCode())
         .then(data => {
           data === "Error" ? this.setState({ response: error }) : this.setState({ response: data }, () => {

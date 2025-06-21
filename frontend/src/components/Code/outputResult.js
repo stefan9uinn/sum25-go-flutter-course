@@ -13,7 +13,7 @@ class OutputResult extends React.Component {
             <div className="code-aside">
                 <p className="code-general-text" style={{ marginTop: '10px' }} >Request Result:</p>
                 <div className="code-result">
-                    {Object.keys(this.props.response).length === 0 ? <Typography.Text className='code-text'>Request result will appear here</Typography.Text> :
+                    {Object.keys(this.props.response).length === 0 ? <Typography.Text className='code-initial-text'>Request result will appear here</Typography.Text> :
                         <div className="code-output-item">
                             {this.props.response.message === "Please try once again, there is an error in your code" ? <Typography.Text className='code-text' style={{ color: '#B22222' }}>Please try once again, there is an error in your code</Typography.Text> :
                                 <div>
