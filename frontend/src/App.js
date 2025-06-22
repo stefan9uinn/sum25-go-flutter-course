@@ -137,6 +137,7 @@ class App extends React.Component {
       this.lastActiveButton = this.state.activeButton;
       this.setState({ isModalOpen: true, activeButton: "signin" });
     } else {
+      this.setCookie("lastPage", button, 7);
       this.setState({ activeButton: button });
       this.setPage(button);
     }

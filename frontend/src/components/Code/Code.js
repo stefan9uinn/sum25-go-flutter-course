@@ -100,7 +100,7 @@ class Code extends React.Component {
       alert("Please choose another DB for now");
       return;
     }
-    if (chosenDb === "Vector-Based Database") {
+    if (chosenDb === "ChromaDB") {
       this.setLoading(true);
       const error = {
         message: "Please try once again, there is an error in your code",
