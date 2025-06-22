@@ -8,10 +8,10 @@ from django.views.decorators.csrf import csrf_exempt
 @csrf_exempt
 @api_view(['POST'])
 def chroma_query(request):
-    user_id = 1
     try:
         data = json.loads(request.body)
         query_text = data.get("code")
+        user_id = data.get("user_id")
     except Exception:
         query_text = None
 
@@ -52,11 +52,8 @@ def chroma_query(request):
             result = {"document": doc} if doc else {"error": "Document not found"}
         
         elif command == "DELETE":
-            if engine.get_by_id(parsed["doc_id"]) is None:
-                result = {"error": "Document not found"}
-            else:
-                engine.delete(parsed["doc_id"])
-                result = {"status": "deleted", "doc_id": parsed["doc_id"]}
+            engine.delete(parsed["doc_id"])
+            result = {"status": "deleted", "doc_id": parsed["doc_id"]}
         
         db_state = engine.get_db_state()
         execution_time = time.time() - start_time
@@ -71,3 +68,21 @@ def chroma_query(request):
     
     except Exception as e:
         return Response({"error": str(e)}, status=400)
+
+@csrf_exempt
+@api_view(['POST'])  
+def chroma_state(request):
+    try:
+        data = json.loads(request.body)
+        user_id = data.get("user_id")
+    except Exception:
+        user_id = None
+    if not user_id:
+        return Response({"error": "Missing user_id"}, status=400)
+    
+    engine = ChromaEngine(user_id)
+    try:
+        state = engine.get_db_state()
+        return Response({"state": state})
+    except Exception as e:
+        return Response({"error": "User not found"})
