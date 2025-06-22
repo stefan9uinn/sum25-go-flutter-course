@@ -1,6 +1,6 @@
 import React from "react"
 import { Button, Select, Upload, message } from "antd";
-import { UploadOutlined } from '@ant-design/icons';
+import { UploadOutlined, SyncOutlined } from '@ant-design/icons';
 
 
 const uploadProps = {
@@ -47,7 +47,7 @@ class CodeInput extends React.Component {
                         ]}
                         onChange={value => this.setState({ chosenDb: value })}
                     />
-                    < Button className='my-orange-button-outline' type="primary" style={{ marginTop: '10px', marginLeft: '0px' }} onClick={() => this.props.getIt(this.state.code, this.state.chosenDb)}>Run Code</Button>
+                    < Button className='my-orange-button-outline' type="primary" style={{ marginTop: '10px', marginLeft: '0px' }} onClick={() => this.props.getIt(this.state.code, this.state.chosenDb)} loading={this.props.isLoading} disabled={this.props.isLoading} iconPosition="end">Run Code</Button>
                 </div>
             </div>
         );

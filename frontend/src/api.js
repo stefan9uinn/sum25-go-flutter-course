@@ -20,3 +20,15 @@ export async function getCode(text, id) {
   };
   return res.json();
 }
+
+export async function getIState(id) {
+  const res = await fetch(`${BASE_URL}/api/chroma_state/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ user_id: id }),
+  });
+  if (!res.ok) throw new Error("API call failed");
+  return res.json();
+}

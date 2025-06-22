@@ -4,7 +4,7 @@ import MyModal from "./modal";
 import { FaBook } from "react-icons/fa";
 import { MdAccountCircle } from "react-icons/md";
 
-class LeftSideB extends React.Component {
+class RightSideB extends React.Component {
     render() {
         return (
             <div style={{ display: "flex", alignItems: "center" }}>
@@ -34,4 +34,4 @@ class LeftSideB extends React.Component {
     }
 }
 
-export default LeftSideB;
+export default RightSideB;

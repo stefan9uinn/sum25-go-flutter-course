@@ -20,14 +20,14 @@
 .icon-row {
     margin-top: 30px;
     margin-bottom: 80px;
-    margin-left: 13%;
+    margin-left: 9%;
     margin-right: 15%;
     display: flex;
     justify-content: left; 
-    width: 1200px;
+    width: 1500px;
     margin-top: 10;
     font-size: 100px;
-    gap: 15%;
+    gap: 10%;
 }
 
 .iconText {
@@ -36,6 +36,7 @@
     text-align: left;  
     gap: 16px;
     height: 150px;
+    width: 700px;
 }
 
 .icon {
@@ -46,16 +47,16 @@
 }
 
 .title {
-    font-size: 18px;
+    font-size: 24px;
     color: #51CB63;
     margin-bottom: 5px;
 }
 
 .description {
-    font-size: 16px;
+    font-size: 19px;
     color: #ffffff;
     font-weight: 300;
-    max-width: 300px;
+    width: 500px;
     display: block;
     word-break: break-word;
 }
@@ -68,7 +69,7 @@
 .button-row {
     display: flex;
     justify-content: flex-start;
-    gap: 30px;
+    gap: 20px;
 }
 
 .myButton  {
@@ -76,10 +77,11 @@
     color: #51CB63 !important;
     border-color: #51CB63 !important;
     border: 1.5px solid;
-    border-radius: 20px !important;
+    border-radius: 7px !important;
     font-size: 18px !important;    
     padding: 14px 40px !important; 
     height: 48px !important;  
+    font-family: 'Noto Sans', sans-serif;
 }
 
 .myButton:hover {
@@ -87,7 +89,7 @@
     color: #ffffff !important;
     border-color: #51CB63 !important;
     border: 1.5px solid;
-    border-radius: 20px !important;
+    border-radius: 7px !important;
 }
 
 .start {
@@ -96,6 +98,6 @@
     text-align: center;
     justify-content: center;
     width: 100%;
-    margin-top: 30px;
+    margin-top: 50px;
     gap: 50px;
 }

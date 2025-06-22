@@ -19,7 +19,7 @@
 .my-modal .login {
     margin-top: 10px;
     margin-bottom: 10px;
-    background: #222 !important;
+    background: #0d1117 !important;
     color: #fff !important;
     border: 1px solid #51CB63 !important;
 }
@@ -27,7 +27,7 @@
 .my-modal .damn {
     margin-top: 10px;
     margin-bottom: 10px;
-    background: #222 !important;
+    background: #0d1117 !important;
     color: #ffffff;
     border: 1px solid #51CB63 !important;
 }
@@ -54,6 +54,7 @@
     background-color: #161b22;
     color: rgb(255, 255, 255);
     font-weight: 700;
+    border-bottom: 1.5px solid #51CB63;
 }
 
 .logo-button-outline {
@@ -84,7 +85,7 @@
 }
 
 .app-container {
-    min-height: 100vh;
+    min-height: 100%;
     display: flex;
     flex-direction: column;
 }

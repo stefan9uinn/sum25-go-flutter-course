@@ -6,7 +6,7 @@ class OutputInputs extends React.Component {
     render() {
         return (
             <div className="code-output-container">
-                <OutputDBState response={this.props.response} />
+                <OutputDBState response={this.props.response} db_state={this.props.db_state}/>
                 <OutputResult response={this.props.response} />
             </div>
         );

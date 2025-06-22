@@ -70,7 +70,7 @@ def chroma_query(request):
         return Response({"error": str(e)}, status=400)
 
 @csrf_exempt
-@api_view(['GET'])  
+@api_view(['POST'])  
 def chroma_state(request):
     try:
         data = json.loads(request.body)
@@ -85,4 +85,4 @@ def chroma_state(request):
         state = engine.get_db_state()
         return Response({"state": state})
     except Exception as e:
-        return Response({"error": str(e)}, status=400)
+        return Response({"error": "User not found"})

@@ -6,6 +6,41 @@
     margin-left: 15px;
 }
 
+.lamp {
+    background-color: #161b22;
+    color: #51CB63;
+    border: 1px solid #51CB63;
+    margin-right: 50px;
+    margin-bottom: 40px;
+    transition: background 100ms, color 100ms, border-color 100ms;
+}
+
+.my-back-button {
+    background-color: #0d1117 !important;
+    color: #c01619 !important;
+    font-family: 'Noto Sans', sans-serif;
+    border-color: #c01619 !important;
+    margin-left: 15px;
+    position: absolute;
+    left: 2px;   /* расстояние от левого края */
+    top: 16px;
+    background-color: #161b22;
+    width: 90px; 
+}
+
+.my-back-button:hover {
+    background: #c01619 !important;
+    color: #fff !important;
+    border-color: #c01619 !important;
+}
+
+
+.lamp:hover {
+    background-color: #51CB63;
+    color: #ffffff;
+    border: 1px solid #51CB63;
+}
+
 .my-orange-button-solid {
     background-color: #51CB63 !important;
     color: #ffffff;
@@ -22,7 +57,13 @@
 
 }
 
-
+.my-orange-button-outline:disabled,
+.my-orange-button-solid:disabled {
+    background-color: #161b22 !important;
+    color: #51CB63 !important;
+    border-color: #51CB63 !important;
+    cursor: not-allowed;
+}
 .code-container {
     margin-top: 40px;
     display: flex;
@@ -121,6 +162,20 @@ textarea:active {
 .code-text {
     color: #51CB63;
     font-size: 13px;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 400;
+}
+
+.modal-title{
+    color: #fff;
+    font-size: 20px;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 400;
+}
+
+.modal-text{
+    color: #fff;
+    font-size: 15px;
     font-family: 'Noto Sans', sans-serif;
     font-weight: 400;
 }

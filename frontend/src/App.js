@@ -5,25 +5,32 @@ import Account from "./components/Account/Account";
 import Code from "./components/Code/Code";
 import Home from "./components/Home/Home";
 import ClassRooms from "./components/Classrooms/Classrooms";
+import Template from "./components/Template/Template";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
 class App extends React.Component {
+  lastActiveButton = '';
   constructor(props) {
     super(props);
+    const lastPage = this.getCookie("lastPage");
     this.state = {
-      page: "home",
+      page: lastPage || "home",
       user: {
         login: this.getCookie("login"),
         password: this.getCookie("password"),
         needMemorizing: this.getCookie("needMemorizing") === "true" ? true : false,
       },
       isLogin: this.getCookie("login") ? true : false,
+      isModalOpen: false,
+      activeButton: 'home',
     };
     this.setPage = this.setPage.bind(this);
     this.logOut = this.logOut.bind(this);
     this.updateLoginState = this.updateLoginState.bind(this);
     this.pageRef = {};
-    this.handleHomeButtonClick = this.handleHomeButtonClick.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.handleCancel = this.handleCancel.bind(this);
+    this.login = this.login.bind(this);
   }
 
   setPage = (page) => {
@@ -43,7 +50,17 @@ class App extends React.Component {
       case "home":
         return (
           <div>
-            <Home handleButtonClick={this.handleHomeButtonClick} />
+            <Home setPage={this.setPage}
+              current={this.state.page}
+              updateLogIn={this.updateLoginState}
+              logIn={this.logIn}
+              setCookie={this.setCookie}
+              isLogin={this.state.isLogin}
+              activeButton={this.state.activeButton}
+              isModalOpen={this.state.isModalOpen}
+              handleButtonClick={this.handleButtonClick}
+              handleCancel={this.handleCancel}
+              login={this.login} />
           </div>
         );
       case "classrooms":
@@ -54,12 +71,17 @@ class App extends React.Component {
       case "code":
         return (
           <div>
-            <Code getCookie={this.getCookie}/>
+            <Code getCookie={this.getCookie} isLogin={this.state.isLogin} handleButtonClick={this.handleButtonClick}/>
           </div>);
       case "acc":
         return (
           <div>
             <Account user={this.state.user} logOut={this.logOut} />
+          </div>);
+      case "template":
+        return (
+          <div>
+            <Template handleButtonClick={this.handleButtonClick}/>
           </div>);
       default:
         return <div>Page not found</div>;
@@ -71,17 +93,7 @@ class App extends React.Component {
     const nodeRef = this.getPageRef(page);
     return (
       <div className="app-container">
-        <div class="main-content">
-          {this.state.page !== "home" && (
-            <Header
-              setPage={this.setPage}
-              current={this.state.page}
-              updateLogIn={this.updateLoginState}
-              logIn={this.logIn}
-              setCookie={this.setCookie}
-              checkLogin={this.state.isLogin}
-            />
-          )}
+        <div className="main-content">
           <div>
             <SwitchTransition>
               <CSSTransition
@@ -91,8 +103,25 @@ class App extends React.Component {
                 unmountOnExit
                 nodeRef={nodeRef}
               >
-                <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
-                  {this.renderContent()}
+                <div>
+                  {this.state.page !== "home" && (
+                    <Header
+                      setPage={this.setPage}
+                      current={this.state.page}
+                      updateLogIn={this.updateLoginState}
+                      logIn={this.logIn}
+                      setCookie={this.setCookie}
+                      checkLogin={this.state.isLogin}
+                      activeButton={this.state.activeButton}
+                      isModalOpen={this.state.isModalOpen}
+                      handleButtonClick={this.handleButtonClick}
+                      handleCancel={this.handleCancel}
+                      login={this.login}
+                    />
+                  )}
+                  <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
+                    {this.renderContent()}
+                  </div>
                 </div>
               </CSSTransition>
             </SwitchTransition>
@@ -103,8 +132,14 @@ class App extends React.Component {
     );
   }
 
-  handleHomeButtonClick = (page) => {
-    this.setPage(page);
+  handleButtonClick = (button) => {
+    if (button === "signin") {
+      this.lastActiveButton = this.state.activeButton;
+      this.setState({ isModalOpen: true, activeButton: "signin" });
+    } else {
+      this.setState({ activeButton: button });
+      this.setPage(button);
+    }
   };
 
   logIn = (login, password, needMemorizing) => {
@@ -117,10 +152,15 @@ class App extends React.Component {
       password: password,
       needMemorizing: needMemorizing,
     }
-    this.setState({isLogin: true, user: user});
-    
+    this.setState({ isLogin: true, user: user });
+
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.current !== this.props.current) {
+      this.setState({ activeButton: this.props.current });
+    }
+  }
 
   logOut = () => {
     this.deleteCookie("login");
@@ -154,8 +194,8 @@ class App extends React.Component {
     const login = this.getCookie("login");
     const password = this.getCookie("password");
     this.setState({
-    isLogin: !!login && !!password,
-  });
+      isLogin: !!login && !!password,
+    });
   };
 
 
@@ -169,9 +209,18 @@ class App extends React.Component {
     return undefined;
   }
 
+  handleCancel = () => {
+    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton })
+  };
+
+  login = () => {
+    this.setLogin();
+    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton });
+  };
+
   getRandomInt(max) {
-  return Math.floor(Math.random() * max);
-}
+    return Math.floor(Math.random() * max);
+  }
 }
 
 export default App;
