@@ -1,3 +1,4 @@
+
 const BASE_URL = process.env.REACT_APP_API_URL || "";
 
 export async function getHello() {
@@ -6,13 +7,27 @@ export async function getHello() {
   return res.json();
 }
 
-export async function getCode(text) {
+export async function getCode(text, id) {
   const res = await fetch(`${BASE_URL}/api/chroma_query/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ code: text }),
+    body: JSON.stringify({ code: text, user_id: id }),
+  });
+  if (!res.ok) {
+    return "Error";
+  };
+  return res.json();
+}
+
+export async function getIState(id) {
+  const res = await fetch(`${BASE_URL}/api/chroma_state/`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ user_id: id }),
   });
   if (!res.ok) throw new Error("API call failed");
   return res.json();

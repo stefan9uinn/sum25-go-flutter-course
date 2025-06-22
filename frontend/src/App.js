@@ -1,30 +1,36 @@
 import React from "react";
-import Header from "./components/header";
-import Footer from "./components/footer";
-import Account from "./components/Account";
-import Code from "./components/Code";
-import Home from "./components/Home";
-import ClassRooms from "./components/Classrooms";
+import Footer from "./components/LayOut/footer";
+import Header from "./components/LayOut/Header/Header";
+import Account from "./components/Account/Account";
+import Code from "./components/Code/Code";
+import Home from "./components/Home/Home";
+import ClassRooms from "./components/Classrooms/Classrooms";
+import Template from "./components/Template/Template";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
-const BASE_URL = process.env.REACT_APP_API_URL || "";
-
 class App extends React.Component {
+  lastActiveButton = '';
   constructor(props) {
     super(props);
+    const lastPage = this.getCookie("lastPage");
     this.state = {
-      page: "home",
+      page: lastPage || "home",
       user: {
-        login: this.getCookie("login") || "",
-        password: this.getCookie("password") || "",
+        login: this.getCookie("login"),
+        password: this.getCookie("password"),
         needMemorizing: this.getCookie("needMemorizing") === "true" ? true : false,
       },
       isLogin: this.getCookie("login") ? true : false,
+      isModalOpen: false,
+      activeButton: 'home',
     };
     this.setPage = this.setPage.bind(this);
     this.logOut = this.logOut.bind(this);
     this.updateLoginState = this.updateLoginState.bind(this);
     this.pageRef = {};
+    this.handleButtonClick = this.handleButtonClick.bind(this)
+    this.handleCancel = this.handleCancel.bind(this);
+    this.login = this.login.bind(this);
   }
 
   setPage = (page) => {
@@ -44,7 +50,17 @@ class App extends React.Component {
       case "home":
         return (
           <div>
-            <Home />
+            <Home setPage={this.setPage}
+              current={this.state.page}
+              updateLogIn={this.updateLoginState}
+              logIn={this.logIn}
+              setCookie={this.setCookie}
+              isLogin={this.state.isLogin}
+              activeButton={this.state.activeButton}
+              isModalOpen={this.state.isModalOpen}
+              handleButtonClick={this.handleButtonClick}
+              handleCancel={this.handleCancel}
+              login={this.login} />
           </div>
         );
       case "classrooms":
@@ -55,12 +71,17 @@ class App extends React.Component {
       case "code":
         return (
           <div>
-            <Code output={''} />
+            <Code getCookie={this.getCookie} isLogin={this.state.isLogin} handleButtonClick={this.handleButtonClick}/>
           </div>);
       case "acc":
         return (
           <div>
             <Account user={this.state.user} logOut={this.logOut} />
+          </div>);
+      case "template":
+        return (
+          <div>
+            <Template handleButtonClick={this.handleButtonClick}/>
           </div>);
       default:
         return <div>Page not found</div>;
@@ -70,12 +91,10 @@ class App extends React.Component {
   render() {
     const page = this.state.page;
     const nodeRef = this.getPageRef(page);
-
     return (
       <div className="app-container">
-        <div className="app-container">
-          <Header setPage={this.setPage} current={this.state.page} updateLogIn={this.updateLoginState} logIn={this.logIn} setCookie={this.setCookie} checkLogin={this.state.isLogin} />
-          <div >
+        <div className="main-content">
+          <div>
             <SwitchTransition>
               <CSSTransition
                 key={page}
@@ -84,8 +103,25 @@ class App extends React.Component {
                 unmountOnExit
                 nodeRef={nodeRef}
               >
-                <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
-                  {this.renderContent()}
+                <div>
+                  {this.state.page !== "home" && (
+                    <Header
+                      setPage={this.setPage}
+                      current={this.state.page}
+                      updateLogIn={this.updateLoginState}
+                      logIn={this.logIn}
+                      setCookie={this.setCookie}
+                      checkLogin={this.state.isLogin}
+                      activeButton={this.state.activeButton}
+                      isModalOpen={this.state.isModalOpen}
+                      handleButtonClick={this.handleButtonClick}
+                      handleCancel={this.handleCancel}
+                      login={this.login}
+                    />
+                  )}
+                  <div ref={nodeRef} style={{ position: "absolute", width: "100%" }}>
+                    {this.renderContent()}
+                  </div>
                 </div>
               </CSSTransition>
             </SwitchTransition>
@@ -96,15 +132,36 @@ class App extends React.Component {
     );
   }
 
+  handleButtonClick = (button) => {
+    if (button === "signin") {
+      this.lastActiveButton = this.state.activeButton;
+      this.setState({ isModalOpen: true, activeButton: "signin" });
+    } else {
+      this.setCookie("lastPage", button, 7);
+      this.setState({ activeButton: button });
+      this.setPage(button);
+    }
+  };
+
   logIn = (login, password, needMemorizing) => {
     this.setCookie("login", login, 7);
     this.setCookie("password", password, 7);
     this.setCookie("needMemorizing", needMemorizing, 7);
     this.setPage("home");
-    this.setState({isLogin: true})
-    
+    let user = {
+      login: login,
+      password: password,
+      needMemorizing: needMemorizing,
+    }
+    this.setState({ isLogin: true, user: user });
+
   }
 
+  componentDidUpdate(prevProps) {
+    if (prevProps.current !== this.props.current) {
+      this.setState({ activeButton: this.props.current });
+    }
+  }
 
   logOut = () => {
     this.deleteCookie("login");
@@ -138,8 +195,8 @@ class App extends React.Component {
     const login = this.getCookie("login");
     const password = this.getCookie("password");
     this.setState({
-    isLogin: !!login && !!password,
-  });
+      isLogin: !!login && !!password,
+    });
   };
 
 
@@ -150,7 +207,20 @@ class App extends React.Component {
         return entryValue
       }
     }
-    return null;
+    return undefined;
+  }
+
+  handleCancel = () => {
+    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton })
+  };
+
+  login = () => {
+    this.setLogin();
+    this.setState({ isModalOpen: false, activeButton: this.lastActiveButton });
+  };
+
+  getRandomInt(max) {
+    return Math.floor(Math.random() * max);
   }
 }
 

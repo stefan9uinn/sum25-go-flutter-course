@@ -1,6 +1,6 @@
 import React from "react"
 import { Modal, Input, Button } from "antd";
-
+import "./Header.css"
 
 class MyModal extends React.Component {
   constructor(props) {
