@@ -23,6 +23,8 @@ services:
       target: build
       args:
         REACT_APP_API_URL: http://localhost:8000
+    environment:
+      - NODE_OPTIONS=--max-old-space-size=4096
     ports:
       - "3000:3000"
 
