@@ -52,8 +52,12 @@ def chroma_query(request):
             result = {"document": doc} if doc else {"error": "Document not found"}
         
         elif command == "DELETE":
-            engine.delete(parsed["doc_id"])
-            result = {"status": "deleted", "doc_id": parsed["doc_id"]}
+            doc = engine.get_by_id(parsed["doc_id"])
+            if not doc:
+                return Response({"error": "Document not found"})
+            else:
+                engine.delete(parsed["doc_id"])
+                result = {"status": "deleted", "doc_id": parsed["doc_id"]}
         
         db_state = engine.get_db_state()
         execution_time = time.time() - start_time
