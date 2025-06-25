@@ -6,8 +6,6 @@ import { Typography } from 'antd';
 class OutputDBState extends React.Component {
     render() {
         const { response, db_state } = this.props;
-        
-        // Функция для отображения состояния БД
         const renderDBState = (stateData) => {
             return stateData.state.map((item, index) => (
                 <div key={index} className="code-output-item">
