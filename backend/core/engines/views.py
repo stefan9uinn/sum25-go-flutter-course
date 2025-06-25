@@ -2,7 +2,7 @@ import json
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework.views import APIView
-from engines.ChromaEngine import ChromaEngine, QueryParser
+from chroma.ChromaEngine import ChromaEngine, QueryParser
 from engines.PostgresEngine import PostgresEngine
 import time
 from django.views.decorators.csrf import csrf_exempt
