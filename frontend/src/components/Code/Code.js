@@ -1,6 +1,7 @@
 import React from 'react';
-import { getCode } from '../../api';
-import { getIState } from '../../api';
+import { getChromaResponse } from '../../api';
+import { getChromaInitialState } from '../../api';
+import { getPostgresResponse } from '../../api';
 import CodeInput from './codeInput';
 import OutputInputs from './output';
 import { Button, FloatButton, Typography } from 'antd';
@@ -32,10 +33,10 @@ class Code extends React.Component {
       <div className="code-container">
         <Button className='my-back-button' style={{ height: '35px', fontSize: '15px' }} onClick={() => this.props.handleButtonClick("template")}>Back</Button>
         <main>
-          <CodeInput 
-            getIt={(text, chosenDb) => this.getIt(text, chosenDb)} 
+          <CodeInput
+            getIt={(text, chosenDb) => this.getIt(text, chosenDb)}
             onDbSelect={this.handleDbSelection}
-            isLoading={this.state.isLoading} 
+            isLoading={this.state.isLoading}
           />
         </main>
         <aside className="code-aside">
@@ -65,10 +66,10 @@ class Code extends React.Component {
       console.log("User not logged in, skipping state request");
       return;
     }
-    
+
     this.setLoading(true);
     let string = (this.props.getCookie("login") + this.props.getCookie("password"));
-    getIState(string.hashCode())
+    getChromaInitialState(string.hashCode())
       .then(data => {
         this.setState({ db_state: data }, () => {
           console.log('DB state loaded for:', selectedDb, this.state.db_state);
@@ -95,18 +96,17 @@ class Code extends React.Component {
 
   async executeCommandsSequentially(commands, hashCode, error) {
     this.setLoading(true);
-    
-    // Массив для накопления всех результатов
+
     let allResults = [];
-    
+
     for (let i = 0; i < commands.length; i++) {
       const command = commands[i].trim();
       if (command === '') continue;
-      
+
       try {
         console.log(`Executing command ${i + 1}:`, command);
-        const data = await getCode(command, hashCode);
-        
+        const data = await getChromaResponse(command, hashCode);
+
         if (data === "Error") {
           allResults.push({
             command: command,
@@ -120,9 +120,8 @@ class Code extends React.Component {
             commandNumber: i + 1
           });
         }
-        
-        // Обновляем состояние с накопленными результатами
-        this.setState({ 
+
+        this.setState({
           response: {
             type: 'multiple_commands',
             commands: allResults,
@@ -131,7 +130,7 @@ class Code extends React.Component {
         }, () => {
           console.log(`Command ${i + 1} completed. Total results:`, allResults.length);
         });
-        
+
       } catch (error) {
         console.error(`Error in command ${i + 1}:`, error);
         allResults.push({
@@ -139,8 +138,8 @@ class Code extends React.Component {
           result: { message: "Error occurred while executing command" },
           commandNumber: i + 1
         });
-        
-        this.setState({ 
+
+        this.setState({
           response: {
             type: 'multiple_commands',
             commands: allResults,
@@ -149,7 +148,7 @@ class Code extends React.Component {
         });
       }
     }
-    
+
     this.setLoading(false);
   }
 
@@ -166,28 +165,16 @@ class Code extends React.Component {
       return;
     }
     if (chosenDb === "PostgreSQL") {
-      alert("Please choose another DB for now");
-      return;
-    }
-    if (chosenDb === "SQLite") {
-      alert("Please choose another DB for now");
-      return;
-    }
-    if (chosenDb === "MongoDB") {
-      alert("Please choose another DB for now");
-      return;
-    }
-    if (chosenDb === "ChromaDB") {
       this.setLoading(true);
       const error = {
         message: "Please try once again, there is an error in your code",
       }
       let string = (this.props.getCookie("login") + this.props.getCookie("password"));
       if (!text.includes('\n')) {
-        getCode(text, string.hashCode())
+        getPostgresResponse(text, string.hashCode())
           .then(data => {
             if (data === "Error") {
-              this.setState({ 
+              this.setState({
                 response: {
                   type: 'single_command',
                   command: text,
@@ -195,7 +182,7 @@ class Code extends React.Component {
                 }
               });
             } else {
-              this.setState({ 
+              this.setState({
                 response: {
                   type: 'single_command',
                   command: text,
@@ -212,7 +199,55 @@ class Code extends React.Component {
             this.setLoading(false);
           });
       }
-      else{
+      else {
+        let commands = text.split('\n');
+        this.executeCommandsSequentially(commands, string.hashCode(), error);
+      }
+    }
+    if (chosenDb === "SQLite") {
+      alert("Please choose another DB for now");
+      return;
+    }
+    if (chosenDb === "MongoDB") {
+      alert("Please choose another DB for now");
+      return;
+    }
+    if (chosenDb === "ChromaDB") {
+      this.setLoading(true);
+      const error = {
+        message: "Please try once again, there is an error in your code",
+      }
+      let string = (this.props.getCookie("login") + this.props.getCookie("password"));
+      if (!text.includes('\n')) {
+        getChromaResponse(text, string.hashCode())
+          .then(data => {
+            if (data === "Error") {
+              this.setState({
+                response: {
+                  type: 'single_command',
+                  command: text,
+                  result: error
+                }
+              });
+            } else {
+              this.setState({
+                response: {
+                  type: 'single_command',
+                  command: text,
+                  result: data
+                }
+              }, () => {
+                console.log('Single command result:', this.state.response);
+              });
+            }
+            this.setLoading(false);
+          })
+          .catch(error => {
+            console.error('Error:', error);
+            this.setLoading(false);
+          });
+      }
+      else {
         let commands = text.split('\n');
         this.executeCommandsSequentially(commands, string.hashCode(), error);
       }

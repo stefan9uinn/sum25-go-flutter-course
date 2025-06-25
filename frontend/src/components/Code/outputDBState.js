@@ -8,7 +8,7 @@ class OutputDBState extends React.Component {
         const { response, db_state } = this.props;
         const renderDBState = (stateData) => {
             if (!stateData) {
-                return <Typography.Text className='code-initial-text'>No state data provided</Typography.Text>;
+                return <Typography.Text className='code-initial-text'>Choose DB</Typography.Text>;
             }
             
             if (!stateData.state) {
