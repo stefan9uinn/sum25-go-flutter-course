@@ -28,7 +28,7 @@ schema_view = get_schema_view(
 router = routers.SimpleRouter()
 router.register(r'schema', schema.views.DBSchemaModelViewSet)
 router.register(r'classroom', ClassroomModelViewSet)
-from engines.views import ChromaQueryParser
+from engines.views import ChromaQueryParser, PostgresQueryParser
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -47,8 +47,8 @@ urlpatterns = [
     ),
     path('test/', include("test.urls")),
     path('template/', include("templates.urls")),
-    path('api/chroma_query/', ChromaQueryParser.as_view(), {'default_action': 'query'}),
-    path('api/chroma_state/', ChromaQueryParser.as_view(), {'default_action': 'state'}),
+    path('api/chroma/', ChromaQueryParser.as_view()),
+    path('api/postgres/', PostgresQueryParser.as_view()),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
