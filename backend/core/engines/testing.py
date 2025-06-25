@@ -1,4 +1,4 @@
-from PostgresEngine import PostgresEngine
+from .PostgresEngine import PostgresEngine
 
 eng = PostgresEngine("", "localhost", 5432, "postgres", " ")
 

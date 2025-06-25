@@ -5,9 +5,9 @@ import psycopg2
 from psycopg2.sql import SQL, Identifier
 from psycopg2.extensions import cursor
 
-from SQLEngine import SQLEngine
-from dbmodels import DBInfo, QueryResult
-from utility import postgres_wrap_exceptions as wrap_exceptions
+from .SQLEngine import SQLEngine
+from .dbmodels import DBInfo, QueryResult
+from .utility import postgres_wrap_exceptions as wrap_exceptions
 
 
 SELECT_COLUMNS = \

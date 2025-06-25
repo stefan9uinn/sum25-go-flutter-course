@@ -7,7 +7,7 @@ from engines.PostgresEngine import PostgresEngine
 import time
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
-from exceptions import DBNotExists
+from .exceptions import DBNotExists
 
 
 @method_decorator(csrf_exempt, name='dispatch')
