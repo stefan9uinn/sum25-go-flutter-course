@@ -2,7 +2,7 @@ FROM python:3.10-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+COPY requirementsChroma.txt .
+RUN pip install --upgrade pip && pip install -r requirementsChroma.txt
 
 COPY ChromaEngine.py .
