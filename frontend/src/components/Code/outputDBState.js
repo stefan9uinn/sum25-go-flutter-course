@@ -7,6 +7,18 @@ class OutputDBState extends React.Component {
     render() {
         const { response, db_state } = this.props;
         const renderDBState = (stateData) => {
+            if (!stateData) {
+                return <Typography.Text className='code-initial-text'>No state data provided</Typography.Text>;
+            }
+            
+            if (!stateData.state) {
+                return <Typography.Text className='code-initial-text'>No state property in data</Typography.Text>;
+            }
+            
+            if (stateData.state.length === 0) {
+                return <Typography.Text className='code-initial-text'>Current DB state will appear here</Typography.Text>;
+            }
+            
             return stateData.state.map((item, index) => (
                 <div key={index} className="code-output-item">
                     <Typography.Text className='code-text'>ID: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.id}</Typography.Text></Typography.Text> <br />
