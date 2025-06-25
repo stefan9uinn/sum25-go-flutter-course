@@ -14,7 +14,8 @@ from .exceptions import DBNotExists
 class ChromaQueryParser(APIView):
     
     def post(self, request):
-        action = request.data.get('action')
+        data = json.loads(request.body)
+        action = data.get('action')
         
         if action == 'state':
             return self.chroma_state(request)
@@ -106,7 +107,8 @@ class ChromaQueryParser(APIView):
 class PostgresQueryParser(APIView):
     
     def post(self, request):
-        action = request.data.get('action')
+        data = json.loads(request.body)
+        action = data.get('action')
         
         if action == 'state':
             return self.postgres_state(request)
