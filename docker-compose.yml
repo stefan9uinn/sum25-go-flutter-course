@@ -10,11 +10,18 @@ services:
       - "8000:8000"
     depends_on:
       - frontend
+      - chroma
     environment:
       - DEBUG=True
       - ALLOWED_HOSTS=*
       - SECRET_KEY=replace-this-in-prod
       - DATABASE_URL=sqlite:///db.sqlite3
+    
+  chroma:
+    build:
+      context: ./backend/core/chroma
+    volumes:
+      - ./backend:/app
 
   frontend:
     build:
