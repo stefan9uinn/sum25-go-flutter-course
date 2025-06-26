@@ -5,6 +5,7 @@ import Account from "./components/Account/Account";
 import Code from "./components/Code/Code";
 import Home from "./components/Home/Home";
 import ClassRooms from "./components/Classrooms/Classrooms";
+import ExactClassroom from "./components/ExactClassroom/ExactClassroom";
 import Template from "./components/Template/Template";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 
@@ -66,8 +67,14 @@ class App extends React.Component {
       case "classrooms":
         return (
           <div>
-            <ClassRooms />
+            <ClassRooms handleButtonClick={this.handleButtonClick}/>
           </div>);
+      case "exactClassroom":
+        return (
+          <div>
+            <ExactClassroom />
+          </div>
+        )
       case "code":
         return (
           <div>
