@@ -6,19 +6,10 @@ import image from "../../img/Screen.jpg"
 const { Title, Paragraph, Text, Link } = Typography;
 
 class ExactClassroom extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      id: 24,
-      name: "Introduction to Programmming",
-      teacher: "Zlata Schedrikova",
-      numberOfStudents: 324,
-      date: 23
-    }
-  }
-
-
+  
   render() {
+    const classroom = this.props.classroom;
+    
     return (
       <div className="classroom">
         <Title style={{
@@ -28,16 +19,12 @@ class ExactClassroom extends React.Component {
           fontFamily: "'Noto Sans', sans-serif",
           fontWeight: 600,
           marginBottom: 10
-        }}>Will be <Text style={{
-          color: "#fff",
-          fontSize: 45,
-          fontFamily: "'Noto Sans', sans-serif",
-          fontWeight: 600,
-          marginBottom: 10
-        }}>later</Text>
+        }}>
+          {classroom.name}
         </Title>
-        
-          
+        <Text>Primary Instructor: {classroom.teacher}</Text><br />
+        <Text>Number of Students: {classroom.numberOfStudents}</Text><br />
+        <Text>Created: {classroom.date}</Text>
       </div>
     );
   }

@@ -15,7 +15,7 @@
     justify-items: center;
 }
 
-.title {
+.plain-title {
     color: #ffffff;
     font-size: 25px;
     font-family: 'Noto Sans', sans-serif;
@@ -39,7 +39,7 @@
     margin: 10px;
 }
 
-.description {
+.plain-description {
     display: flex;
     flex-direction: column;
     color: #ffffff;
@@ -50,11 +50,11 @@
     margin-left: 40px;
 }
 
-.description ul li {
+.plain-description ul li {
     margin-bottom: 14px;
 }
 
-.description ul li:nth-child(2) {
+.plain-description ul li:nth-child(2) {
     margin-bottom: 4px; /* or any small value you prefer */
 }
 
@@ -69,11 +69,10 @@
     height: 48px !important;  
     font-family: 'Noto Sans', sans-serif;
 
-    min-width: 80px;
+    min-width: 100px;
     max-width: 120px;
     width: auto;
     align-self: flex-end;
-    margin-right: 50px;
     margin-left: 200px;
 }
 
@@ -83,4 +82,10 @@
     border-color: #51CB63 !important;
     border: 1.5px solid;
     border-radius: 7px !important;
+}
+
+.Created-Button {
+    display: flex;
+    align-items: center;
+    gap: 5px; 
 }

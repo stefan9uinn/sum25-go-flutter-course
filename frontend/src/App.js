@@ -24,6 +24,7 @@ class App extends React.Component {
       isLogin: this.getCookie("login") ? true : false,
       isModalOpen: false,
       activeButton: 'home',
+      selectedClassroom: null,
     };
     this.setPage = this.setPage.bind(this);
     this.logOut = this.logOut.bind(this);
@@ -67,12 +68,12 @@ class App extends React.Component {
       case "classrooms":
         return (
           <div>
-            <ClassRooms handleButtonClick={this.handleButtonClick}/>
+            <ClassRooms selectClassroom={this.selectClassroom}/>
           </div>);
       case "exactClassroom":
         return (
           <div>
-            <ExactClassroom />
+            <ExactClassroom classroom={this.state.selectedClassroom}/>
           </div>
         )
       case "code":
@@ -229,6 +230,10 @@ class App extends React.Component {
   getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
+
+  selectClassroom = (classroom) => {
+    this.setState({ selectedClassroom: classroom, page: "exactClassroom" });
+  };
 }
 
 export default App;

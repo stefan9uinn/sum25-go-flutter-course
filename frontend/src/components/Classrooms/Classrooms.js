@@ -10,6 +10,7 @@ class ClassRooms extends React.Component {
   constructor (props) {
     super(props)
     this.state = {
+      id: 1,
       courses: [{
         name: "Introduction to Programmming",
         teacher: "Zlata Schedrikova",
@@ -23,18 +24,19 @@ class ClassRooms extends React.Component {
         date: 23
         },
       {
-        name: "Introduction to Programmming",
+        name: "Computer Architecture",
         teacher: "Zlata Schedrikova",
         numberOfStudents: 324,
         date: 23
       },
       {
-        name: "Analitical Geometry and Linear Algebra",
+        name: "Math Analysis",
         teacher: "Zlata Schedrikova",
         numberOfStudents: 324,
         date: 23
       }
-      ]
+      ],
+      selectedClassroom: null,
     }
   }
 
@@ -88,11 +90,11 @@ class ClassRooms extends React.Component {
                 alt="course"
                 style={{ width: "500px", borderTopLeftRadius: "14px", borderTopRightRadius: "14px", borderBottomLeftRadius: "0", borderBottomRightRadius: "0" }}
               />
-              <Text className="title">
+              <Text className="plain-title">
                 {el.name}
               </Text>
               
-              <div className="description">
+              <div className="plain-description">
                 <ul>
                   <li>
                     <span>
@@ -105,14 +107,14 @@ class ClassRooms extends React.Component {
                     </span>
                   </li>
                     <li>
-                    <span>
+                    <span className="Created-Button">
                       <span style={{color:"#51CB63", fontWeight:400}}>Created:</span> {el.date}
-                    </span>
-                    <Button className="view" onClick={() => this.props.handleButtonClick("exactClassroom")}>
+                      <Button className="view" onClick={() => this.props.selectClassroom(el)}>
                       <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
                         <span style={{ position: "relative", top: "-1px" }}>View</span>
                       </span>
-                    </Button>
+                      </Button>
+                    </span>
                   </li>
                 </ul>
               </div>
@@ -124,7 +126,11 @@ class ClassRooms extends React.Component {
       </div>
     );
   }
+  
 
+  selectClassroom = (classroom) => {
+    this.setState({ selectedClassroom: classroom });
+  };
 
 }
 
