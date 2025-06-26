@@ -20,6 +20,12 @@ class DBInfo:
                     columns=[ColumnInfo(c[1], c[2])]
                 ))
         return db
+    
+    def to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "tables": [table.to_json() for table in self.tables]
+        }
 
     def __repr__(self) -> str:
         tables_str = ""
@@ -43,6 +49,12 @@ class TableInfo:
         return (
             f"Table {self.name}:{columns_str}"
         )
+    
+    def to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "columns": [column.to_json() for column in self.columns]
+        }
 
 
 @dataclass
@@ -52,6 +64,12 @@ class ColumnInfo:
 
     def __repr__(self) -> str:
         return f"{self.name} - {self.type}"
+    
+    def to_json(self) -> dict:
+        return {
+            "name": self.name,
+            "type": self.type
+        }
 
 
 @dataclass
@@ -60,3 +78,11 @@ class QueryResult:
     rowcount: int
     data: list[tuple] | None
     execution_time: float
+
+    def to_json(self) -> dict:
+        return {
+            "query": self.query,
+            "rowcount": self.rowcount,
+            "data": list(self.data) if self.data is not None else None,
+            "execution_time": self.execution_time
+        }

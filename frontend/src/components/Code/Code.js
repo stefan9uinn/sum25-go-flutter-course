@@ -1,7 +1,8 @@
 import React from 'react';
 import { getChromaResponse } from '../../api';
 import { getChromaInitialState } from '../../api';
-import { getPostgresResponse } from '../../api';
+import { createPostgresTable, getPostgresTable } from '../../api';
+import { queryPostgres } from '../../api';
 import CodeInput from './codeInput';
 import OutputInputs from './output';
 import { Button, FloatButton, Typography } from 'antd';
@@ -24,6 +25,8 @@ class Code extends React.Component {
     this.getInitialState = this.getInitialState.bind(this);
     this.handleDbSelection = this.handleDbSelection.bind(this);
     this.executeCommandsSequentially = this.executeCommandsSequentially.bind(this);
+    this.createPostgresTable = this.createPostgresTable.bind(this);
+
     this.open = this.open.bind(this);
     this.close = this.close.bind(this);
     this.setLoading = this.setLoading.bind(this);
@@ -37,6 +40,7 @@ class Code extends React.Component {
             getIt={(text, chosenDb) => this.getIt(text, chosenDb)}
             onDbSelect={this.handleDbSelection}
             isLoading={this.state.isLoading}
+            createPostgresTable={this.createPostgresTable}
           />
         </main>
         <aside className="code-aside">
@@ -47,6 +51,36 @@ class Code extends React.Component {
       </div>
     );
   }
+
+  createPostgresTable() {
+    if (this.props.isLogin === false) {
+      alert("Please log in to run the code");
+      return;
+    }
+    this.setLoading(true);
+    let string = (this.props.getCookie("login") + this.props.getCookie("password"));
+    createPostgresTable(string.hashCode())
+      .then(data => {
+        console.log('PostgreSQL table created:', data);
+        if (data === "Error") {
+          alert("Error in your code, please try again");
+        } else {
+          this.setState({
+            response: {
+              type: 'single_command',
+              command: 'CREATE TABLE',
+              result: data
+            }
+          })
+        }
+        this.setLoading(false);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        this.setLoading(false);
+      });
+  }
+
 
   setLoading = (loading) => {
     this.setState({ isLoading: loading });
@@ -170,39 +204,28 @@ class Code extends React.Component {
         message: "Please try once again, there is an error in your code",
       }
       let string = (this.props.getCookie("login") + this.props.getCookie("password"));
-      if (!text.includes('\n')) {
-        getPostgresResponse(text, string.hashCode())
-          .then(data => {
-            if (data === "Error") {
-              this.setState({
-                response: {
-                  type: 'single_command',
-                  command: text,
-                  result: error
-                }
-              });
-            } else {
-              this.setState({
-                response: {
-                  type: 'single_command',
-                  command: text,
-                  result: data
-                }
-              }, () => {
-                console.log('Single command result:', this.state.response);
-              });
-            }
-            this.setLoading(false);
-          })
-          .catch(error => {
-            console.error('Error:', error);
-            this.setLoading(false);
-          });
-      }
-      else {
-        let commands = text.split('\n');
-        this.executeCommandsSequentially(commands, string.hashCode(), error);
-      }
+      getPostgresTable(string.hashCode())
+        .then(data => {
+          console.log('PostgreSQL table data:', data);
+          if (data === "Error") {
+            alert("Error in your code, please try again");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.setLoading(false);
+        })
+      queryPostgres(text, string.hashCode())
+        .then(data => {
+          console.log('Request:', data);
+          if (data === "Error") {
+            alert("Error in your code, please try again");
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.setLoading(false);
+        })
     }
     if (chosenDb === "SQLite") {
       alert("Please choose another DB for now");
@@ -212,7 +235,7 @@ class Code extends React.Component {
       alert("Please choose another DB for now");
       return;
     }
-    if (chosenDb === "ChromaDB") {
+    if (chosenDb === "Chroma") {
       this.setLoading(true);
       const error = {
         message: "Please try once again, there is an error in your code",
@@ -264,7 +287,7 @@ String.prototype.hashCode = function () {
     hash = ((hash << 5) - hash) + chr;
     hash |= 0;
   }
-  return hash;
+  return hash.toString();
 };
 
 

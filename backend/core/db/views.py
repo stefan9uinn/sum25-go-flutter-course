@@ -99,6 +99,8 @@ class PutView(APIView):
 
         if db_exists(postgres_engine, db_name):
             postgres_engine.drop_db(db_name)
+            
+        print(data)
 
         dump = """
         CREATE TABLE users (
@@ -109,17 +111,30 @@ class PutView(APIView):
 """
         postgres_engine.create_db(db_name, dump)
 
+        try:
+            schema = postgres_engine.get_db(str(db_name))
+            print(f"DEBUG: Database '{db_name}' state after creation:")
+            print(f"Schema: {schema}")
+        except Exception as e:
+            print(f"DEBUG: Error getting database state: {str(e)}")
+
         return Response({"detail": "Database was set up"}, status=214)
 
 
 class SchemaView(APIView):
     @get_db_schema_doc
-    def get(self, request: Request):
-        data = json.loads(request.body)
-        db_name = data.get("user_id")
-        schema = postgres_engine.get_db(db_name)
+    def post(self, request: Request):
+        try:
+            data = json.loads(request.body)
+            db_name = data.get("user_id")
 
-        return Response(schema.to_json())
+            print(data)
+
+            schema = postgres_engine.get_db(str(db_name))
+
+            return Response(schema.to_json())
+        except Exception as e:
+            return Response({"detail": "Error retrieving schema: " + str(e)}, status=400)
 
 
 class QueryView(APIView):
@@ -131,7 +146,9 @@ class QueryView(APIView):
         data = json.loads(request.body)
         db_name = data.get("user_id")
 
-        query = request.data
+        print(data)
+
+        query = data.get("code")
         query = query.strip()
         query = query.replace('\\n', '')
         print("\n\nDATA:", query, "\n\n")

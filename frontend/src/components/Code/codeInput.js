@@ -29,6 +29,7 @@ class CodeInput extends React.Component {
     render() {
         return (
             <div>
+                {this.state.chosenDb === 'PostgreSQL' ? < Button className='my-orange-button-outline' type="primary" style={{ marginTop: '10px', marginLeft: '0px' }} onClick={() => this.props.createPostgresTable()} loading={this.props.isLoading} disabled={this.props.isLoading} iconPosition="end">Run Code</Button> : null}
                 <p className="code-general-text">Write your code or <span><Upload {...uploadProps}>
                     <Button icon={<UploadOutlined />} className='my-orange-button-outline' > Import File</Button>
                 </Upload></span></p>
@@ -43,7 +44,7 @@ class CodeInput extends React.Component {
                             { value: 'PostgreSQL', label: 'PostgreSQL' },
                             { value: 'SQLite', label: 'SQLite' },
                             { value: 'MongoDB', label: 'MongoDB' },
-                            { value: 'ChromaDB', label: 'ChromaDB' },
+                            { value: 'Chroma', label: 'Chroma' },
                         ]}
                         onChange={value => {
                             this.setState({ chosenDb: value });

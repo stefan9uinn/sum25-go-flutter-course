@@ -4,7 +4,7 @@ from .PostgresEngine import PostgresEngine
 
 postgres_engine = PostgresEngine(
                 root_db="",
-                host="localhost",
+                host="postgres",
                 port=5432,
                 user=config("POSTGRES_USER"),
                 password=config("POSTGRES_PASSWORD"),

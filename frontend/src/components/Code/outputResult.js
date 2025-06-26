@@ -18,7 +18,6 @@ class OutputResult extends React.Component {
                     {Object.keys(response).length === 0 ? 
                         <Typography.Text className='code-initial-text'>Request result will appear here</Typography.Text> :
                         <div className="code-output-item">
-                            {/* Обработка множественных команд */}
                             {response.type === 'multiple_commands' ? (
                                 <div>
                                     {response.commands.map((commandData, index) => (
@@ -34,7 +33,6 @@ class OutputResult extends React.Component {
                                     ))}
                                 </div>
                             ) : (
-                                /* Обработка одиночной команды */
                                 response.type === 'single_command' ? (
                                     <div>
                                         <Typography.Text className='code-text' style={{ color: '#51CB63', fontSize: '14px' }}>
@@ -45,7 +43,6 @@ class OutputResult extends React.Component {
                                         </div>
                                     </div>
                                 ) : (
-                                    /* Обработка старого формата для совместимости */
                                     this.renderSingleResult(response)
                                 )
                             )}
