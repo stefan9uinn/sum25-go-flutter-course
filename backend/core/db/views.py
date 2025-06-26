@@ -7,7 +7,7 @@ from engines import postgres_engine
 from engines.exceptions import QueryError
 from engines.shortcuts import db_exists
 
-from chroma.ChromaEngine import ChromaEngine, QueryParser
+from chroma.ChromaClient import ChromaClient
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 import time
@@ -47,47 +47,16 @@ class ChromaQueryParser(APIView):
         try:
             start_time = time.time()
             
-            parsed = QueryParser.parse(query_text)
+            chroma_client = ChromaClient()
+            result = chroma_client.query_parser(user_id, query_text)
             
-            engine = ChromaEngine(user_id)
+            db_state_response = chroma_client.get_db_state(user_id)
+            db_state = db_state_response.get("state", [])
             
-            command = parsed["command"]
-            result = {}
-            
-            if command == "ADD":
-                doc_id = parsed.get("doc_id") or f"doc_{int(time.time() * 1000)}"
-                engine.add_document(
-                    text=parsed["text"],
-                    metadata=parsed.get("metadata"),
-                    doc_id=doc_id
-                )
-                result = {"status": "added", "doc_id": doc_id}
-            
-            elif command == "SEARCH":
-                search_results = engine.search(
-                    query=parsed["query"],
-                    k=parsed["k"],
-                    filters=parsed.get("filters")
-                )
-                result = {"search_results": search_results}
-            
-            elif command == "GET":
-                doc = engine.get_by_id(parsed["doc_id"])
-                result = {"document": doc} if doc else {"error": "Document not found"}
-            
-            elif command == "DELETE":
-                doc = engine.get_by_id(parsed["doc_id"])
-                if not doc:
-                    return Response({"error": "Document not found"})
-                else:
-                    engine.delete(parsed["doc_id"])
-                    result = {"status": "deleted", "doc_id": parsed["doc_id"]}
-            
-            db_state = engine.get_db_state()
             execution_time = time.time() - start_time
             
             return Response({
-                "command": command,
+                "command": result.get("command", "UNKNOWN"),
                 "result": result,
                 "db_state": db_state,
                 "execution_time": f"{execution_time:.4f} seconds",
@@ -106,9 +75,10 @@ class ChromaQueryParser(APIView):
         if not user_id:
             return Response({"error": "Missing user_id"}, status=400)
         
-        engine = ChromaEngine(user_id)
         try:
-            state = engine.get_db_state()
+            chroma_client = ChromaClient()
+            state_response = chroma_client.get_db_state(user_id)
+            state = state_response.get("state", [])
             return Response({"state": state})
         except Exception as e:
             return Response({"error": "User not found"})
