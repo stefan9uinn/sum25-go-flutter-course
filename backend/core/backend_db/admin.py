@@ -3,7 +3,7 @@ from .models import Classroom, Enrollment, Course, Assignment, Submission
 from django.conf import settings
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, Profile
+from .models import User, Profile, Topic, Classroom
 
 class CustomUserAdmin(UserAdmin):
     model = User
@@ -31,10 +31,10 @@ admin.site.register(Profile)
 admin.site.register(Classroom)
 admin.site.register(Topic)
 
-@admin.register(Classroom)
-class ClassroomAdmin(admin.ModelAdmin):
-    list_display = ('id', 'created_at')
-    search_fields = ()
+#@admin.register(Classroom)
+#class ClassroomAdmin(admin.ModelAdmin):
+#    list_display = ('id', 'created_at')
+#    search_fields = ()
 
 @admin.register(Enrollment)
 class EnrollmentAdmin(admin.ModelAdmin):

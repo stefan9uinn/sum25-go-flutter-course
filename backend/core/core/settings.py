@@ -23,12 +23,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-your-secret-key-here-change-this-in-production')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG')
+DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')], default='*')
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')], default='localhost,127.0.0.1,89.169.182.245')
 
 # Application definition
 
@@ -42,12 +42,16 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
+    #'account',
+    #'classroom',
     'test',
     'schema',
     'templates',
     'db',
     'rest_framework_simplejwt',
+    'django.contrib.postgres',
     'backend_db',
+    #'school',
 ]
 
 MIDDLEWARE = [
@@ -102,13 +106,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'backend_db',
-        'USER': 'backend_user',
-        'PASSWORD': 'backend_pass',
-        'HOST': 'backend-db',  # matches the service name
-        'PORT': '5432',
+        'NAME': os.environ.get('POSTGRES_DB', 'school_db'),
+        'USER': os.environ.get('POSTGRES_USER', 'app_admin'),
+        'PASSWORD': os.environ.get('POSTGRES_PASSWORD', 'StrongPassword!'),
+        'HOST': os.environ.get('POSTGRES_HOST', 'localhost'),
+        'PORT': os.environ.get('POSTGRES_PORT', '5432'),
     }
 }
+
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [

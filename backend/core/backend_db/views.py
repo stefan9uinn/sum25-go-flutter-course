@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from .models import Course, Assignment
 from rest_framework import viewsets
-from .models import Classroom, Enrollment, Submission
+from .models import Classroom, Enrollment, Submission, Topic, User
 from django.conf import settings
 from .serializers import UserSerializer, ClassroomSerializer, EnrollmentSerializer, CourseSerializer, AssignmentSerializer, SubmissionSerializer
 
