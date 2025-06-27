@@ -21,6 +21,3 @@ COPY . /app
 ENV PYTHONPATH=/app/core
 
 EXPOSE 8000
-
-RUN ["python", "core/manage.py", "migrate"]
-CMD ["python", "core/manage.py", "runserver", "0.0.0.0:8000"]
