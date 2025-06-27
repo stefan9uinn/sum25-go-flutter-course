@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'templates',
     'db',
     'rest_framework_simplejwt',
+    'backend_db',
 ]
 
 MIDDLEWARE = [
@@ -102,11 +103,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'backend_db',
+        'USER': 'backend_user',
+        'PASSWORD': 'backend_pass',
+        'HOST': 'backend-db',  # matches the service name
+        'PORT': '5432',
     }
 }
-
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOW_HEADERS = [
