@@ -42,8 +42,6 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
-    'account',
-    'classroom',
     'test',
     'schema',
     'templates',
@@ -188,7 +186,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Custom user config
-AUTH_USER_MODEL = 'account.User'
+AUTH_USER_MODEL = 'backend_db.User'
 
 
 SIMPLE_JWT = {

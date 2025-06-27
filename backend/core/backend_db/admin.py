@@ -1,6 +1,35 @@
 from django.contrib import admin
 from .models import Classroom, Enrollment, Course, Assignment, Submission
 from django.conf import settings
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import User, Profile
+
+class CustomUserAdmin(UserAdmin):
+    model = User
+    list_display = ("email", "is_staff", "is_active",)
+    list_filter = ("email", "is_staff", "is_active",)
+    fieldsets = (
+        (None, {"fields": ("email", "password")}),
+        ("Permissions", {"fields": ("is_staff", "is_active", "groups", "user_permissions")}),
+    )
+    add_fieldsets = (
+        (None, {
+            "classes": ("wide",),
+            "fields": (
+                "email", "password1", "password2", "is_staff",
+                "is_active", "groups", "user_permissions"
+            )}
+        ),
+    )
+    search_fields = ("email",)
+    ordering = ("email",)
+
+admin.site.register(User)
+admin.site.register(Profile)
+
+admin.site.register(Classroom)
+admin.site.register(Topic)
 
 @admin.register(Classroom)
 class ClassroomAdmin(admin.ModelAdmin):
