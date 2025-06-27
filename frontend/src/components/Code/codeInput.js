@@ -43,7 +43,7 @@ class CodeInput extends React.Component {
                             { value: 'PostgreSQL', label: 'PostgreSQL' },
                             { value: 'SQLite', label: 'SQLite' },
                             { value: 'MongoDB', label: 'MongoDB' },
-                            { value: 'ChromaDB', label: 'ChromaDB' },
+                            { value: 'Chroma', label: 'Chroma' },
                         ]}
                         onChange={value => {
                             this.setState({ chosenDb: value });

@@ -42,7 +42,7 @@ class Code extends React.Component {
           <OutputInputs response={this.state.response} db_state={this.state.db_state} />
         </aside>
         <FloatButton icon={<FaRegLightbulb />} type="basic" className='lamp' onClick={this.open} tooltip="Command Tips" />
-        <HintModal title={<Typography.Text className='modal-title'>Types of command for <Typography.Text className='modal-title' style={{ color: '#51CB63' }}>ChromaDB</Typography.Text> </Typography.Text>} onCancel={this.close} open={this.state.isModalOpen} />
+        <HintModal title={<Typography.Text className='modal-title'>Types of command for <Typography.Text className='modal-title' style={{ color: '#51CB63' }}>Chroma</Typography.Text> </Typography.Text>} onCancel={this.close} open={this.state.isModalOpen} />
       </div>
     );
   }
@@ -65,7 +65,6 @@ class Code extends React.Component {
       console.log("User not logged in, skipping state request");
       return;
     }
-    
     this.setLoading(true);
     let string = (this.props.getCookie("login") + this.props.getCookie("password"));
     getIState(string.hashCode())
@@ -76,14 +75,14 @@ class Code extends React.Component {
         this.setLoading(false);
       })
       .catch(error => {
-        console.error('Error:', error);
-        this.setLoading(false);
+        console.error('Error loading DB state:', error);
+         this.setLoading(false);
       });
   }
 
   handleDbSelection(selectedDb) {
     console.log('Database selected:', selectedDb);
-    if (selectedDb === "ChromaDB") {
+    if (selectedDb === "Chroma") {
       this.getInitialState(selectedDb);
     } else if (selectedDb === "PostgreSQL" || selectedDb === "SQLite" || selectedDb === "MongoDB") {
       console.log(`${selectedDb} is not yet supported for state loading`);
@@ -150,6 +149,8 @@ class Code extends React.Component {
       }
     }
     
+    // Обновляем состояние БД после выполнения всех команд
+    this.getInitialState("Chroma");
     this.setLoading(false);
   }
 
@@ -177,7 +178,7 @@ class Code extends React.Component {
       alert("Please choose another DB for now");
       return;
     }
-    if (chosenDb === "ChromaDB") {
+    if (chosenDb === "Chroma") {
       this.setLoading(true);
       const error = {
         message: "Please try once again, there is an error in your code",
@@ -205,6 +206,8 @@ class Code extends React.Component {
                 console.log('Single command result:', this.state.response);
               });
             }
+            // Обновляем состояние БД после выполнения команды
+            this.getInitialState(chosenDb);
             this.setLoading(false);
           })
           .catch(error => {

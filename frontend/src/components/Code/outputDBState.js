@@ -7,8 +7,12 @@ class OutputDBState extends React.Component {
     render() {
         const { response, db_state } = this.props;
         
-        // Функция для отображения состояния БД
         const renderDBState = (stateData) => {
+            // Check if stateData and stateData.state exist and is an array
+            if (!stateData || !stateData.state || !Array.isArray(stateData.state)) {
+                return <Typography.Text className='code-text'>No data available</Typography.Text>;
+            }
+            
             return stateData.state.map((item, index) => (
                 <div key={index} className="code-output-item">
                     <Typography.Text className='code-text'>ID: <Typography.Text className='code-text' style={{ color: '#fff' }}>{item.id}</Typography.Text></Typography.Text> <br />
@@ -27,19 +31,26 @@ class OutputDBState extends React.Component {
                 </div>
             ));
         };
-        let dbStateToShow = db_state;
+        let dbStateToShow = db_state || { state: [] };
         
         if (response.type === 'multiple_commands' && response.commands && response.commands.length > 0) {
             const lastCommand = response.commands[response.commands.length - 1];
             if (lastCommand && lastCommand.result && lastCommand.result.db_state) {
                 dbStateToShow = { state: lastCommand.result.db_state };
             }
+            // Если нет db_state в результате, сохраняем текущее состояние
         } else if (response.type === 'single_command' && response.result) {
             if (response.result.db_state) {
                 dbStateToShow = { state: response.result.db_state };
             }
+            // Если нет db_state в результате, сохраняем текущее состояние
         } else if (response.db_state) {
             dbStateToShow = { state: response.db_state };
+        }
+
+        // Ensure dbStateToShow has the correct structure
+        if (!dbStateToShow || !dbStateToShow.state) {
+            dbStateToShow = { state: [] };
         }
 
         return (

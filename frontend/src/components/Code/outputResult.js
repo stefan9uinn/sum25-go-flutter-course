@@ -10,7 +10,7 @@ class OutputResult extends React.Component {
 
     render() {
         const { response } = this.props;
-        
+        console.log("Response in OutputResult: ", response);
         return (
             <div className="code-aside">
                 <p className="code-general-text" style={{ marginTop: '10px' }} >Request Result:</p>
@@ -46,7 +46,7 @@ class OutputResult extends React.Component {
                                     </div>
                                 ) : (
                                     /* Обработка старого формата для совместимости */
-                                    this.renderSingleResult(response)
+                                    this.renderSingleResult(response.result)
                                 )
                             )}
                         </div>
@@ -61,10 +61,11 @@ class OutputResult extends React.Component {
             return <Typography.Text className='code-text' style={{ color: '#B22222' }}>Please try once again, there is an error in your code</Typography.Text>;
         }
         
+        console.log("ABABABAB");
         return (
             <div>
                 {result.command === 'ADD' ? <Add response={result} /> : ""}
-                {result.command === 'DELETE' ? <Delete response={result} /> : ""}
+                {result.command === 'DELETE' || result.error === "Document not found" ? <Delete response={result} /> : ""}
                 {result.command === 'GET' ? <Get response={result} /> : ""}
                 {result.command === 'SEARCH' ? <Search response={result} /> : ""}
             </div>
