@@ -2,7 +2,7 @@ import { act } from "react";
 
 const BASE_URL = process.env.REACT_APP_API_URL || "";
 
-export async function getChromaResponse(text, id) {
+export async function getCode(text, id) {
   const res = await fetch(`${BASE_URL}/db/chroma/`, {
     method: 'POST',
     headers: {
@@ -16,7 +16,7 @@ export async function getChromaResponse(text, id) {
   return res.json();
 }
 
-export async function getChromaInitialState(id) {
+export async function getIState(id) {
   const res = await fetch(`${BASE_URL}/db/chroma/`, {
     method: 'POST',
     headers: {

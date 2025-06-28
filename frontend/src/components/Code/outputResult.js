@@ -10,7 +10,7 @@ class OutputResult extends React.Component {
 
     render() {
         const { response } = this.props;
-        
+        console.log("Response in OutputResult: ", response);
         return (
             <div className="code-aside">
                 <p className="code-general-text" style={{ marginTop: '10px' }} >Request Result:</p>
@@ -18,6 +18,7 @@ class OutputResult extends React.Component {
                     {Object.keys(response).length === 0 ? 
                         <Typography.Text className='code-initial-text'>Request result will appear here</Typography.Text> :
                         <div className="code-output-item">
+                            {/* Обработка множественных команд */}
                             {response.type === 'multiple_commands' ? (
                                 <div>
                                     {response.commands.map((commandData, index) => (
@@ -33,6 +34,7 @@ class OutputResult extends React.Component {
                                     ))}
                                 </div>
                             ) : (
+                                /* Обработка одиночной команды */
                                 response.type === 'single_command' ? (
                                     <div>
                                         <Typography.Text className='code-text' style={{ color: '#51CB63', fontSize: '14px' }}>
@@ -43,7 +45,8 @@ class OutputResult extends React.Component {
                                         </div>
                                     </div>
                                 ) : (
-                                    this.renderSingleResult(response)
+                                    /* Обработка старого формата для совместимости */
+                                    this.renderSingleResult(response.result)
                                 )
                             )}
                         </div>
@@ -58,10 +61,11 @@ class OutputResult extends React.Component {
             return <Typography.Text className='code-text' style={{ color: '#B22222' }}>Please try once again, there is an error in your code</Typography.Text>;
         }
         
+        console.log("ABABABAB");
         return (
             <div>
                 {result.command === 'ADD' ? <Add response={result} /> : ""}
-                {result.command === 'DELETE' ? <Delete response={result} /> : ""}
+                {result.command === 'DELETE' || result.error === "Document not found" ? <Delete response={result} /> : ""}
                 {result.command === 'GET' ? <Get response={result} /> : ""}
                 {result.command === 'SEARCH' ? <Search response={result} /> : ""}
             </div>
