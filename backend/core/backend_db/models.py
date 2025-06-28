@@ -33,12 +33,22 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    class Role(models.TextChoices):
+        STUDENT = 'student', _('Student')
+        TA = 'ta', _('Teaching Assistant')
+        ADMIN = 'admin', _('Admin')
+        
     email = models.EmailField(max_length = 255, unique = True)
     is_staff = models.BooleanField(default = False)
     is_active = models.BooleanField(default = True)
     is_superuser = models.BooleanField(default = False)
     created_date = models.DateTimeField(auto_now_add = True)
     updated_date = models.DateTimeField(auto_now = True)
+    role = models.CharField(
+        max_length=10,
+        choices=Role.choices,
+        default=Role.STUDENT,
+    )
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 

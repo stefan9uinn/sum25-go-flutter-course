@@ -1,6 +1,7 @@
 import React from "react"
 import { Modal, Input, Button } from "antd";
 import "./Header.css"
+import { createUser } from "../../../api";
 
 class MyModal extends React.Component {
   constructor(props) {
@@ -38,13 +39,23 @@ class MyModal extends React.Component {
             }} className="my-orange-button-outline">
               Cancel
             </Button>
-            <Button type="primary" onClick={() => {
+            <Button type="primary" onClick={async() => {
               this.myForm.reset()
               if (this.state.login === "" || this.state.password === "") {
                 alert("Please fill in all fields")
               } else {
-                this.props.logIn(this.state.login, this.state.password, this.state.needMemorizing)
-                this.props.onCancel()
+                try {
+                  await createUser(this.state.login, this.state.password, "student");
+                  await this.props.logIn(this.state.login, this.state.password, this.state.needMemorizing);
+                  alert("User succsesfully registrated!");
+                  this.myForm.reset();
+                  this.props.onCancel();
+                } catch (err) {
+                  alert("Error user registration");
+                }
+                //this.props.logIn(this.state.login, this.state.password, this.state.needMemorizing)
+                // this.props.onCancel()
+                
               }
             }} className="my-orange-button-solid">
               Sign In
