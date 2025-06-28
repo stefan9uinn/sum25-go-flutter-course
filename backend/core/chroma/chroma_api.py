@@ -124,6 +124,9 @@ async def query_parser(request: QueryParseRequest):
                 result = {"command": "GET", "result": {"status": "found", "document": doc}}
         
         elif command == "DELETE":
+            doc = engine.get_by_id(parsed["doc_id"])
+            if doc is None:
+                raise HTTPException(status_code=404, detail="Document not found")
             engine.delete(parsed["doc_id"])
             result = {"command": "DELETE", "status": "deleted"}
         
