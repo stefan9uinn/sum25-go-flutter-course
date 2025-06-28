@@ -56,7 +56,6 @@ urlpatterns = [
     path('test/', include("test.urls")),
     path('template/', include("templates.urls")),
     path('db/', include("db.urls")),
-    path('api/chroma/', ChromaQueryParser.as_view()),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
