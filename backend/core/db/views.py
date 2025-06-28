@@ -25,6 +25,7 @@ class ChromaQueryParser(APIView):
     def post(self, request):
         data = json.loads(request.body)
         action = data.get('action')
+        print(f"Chroma action: {action}")
         
         if action == 'state':
             return self.chroma_state(request)
@@ -80,9 +81,8 @@ class ChromaQueryParser(APIView):
         try:
             chroma_client = ChromaClient()
             state_response = chroma_client.get_db_state(user_id)
-            print(state_response)
             state = state_response.get("state", [])
-            return Response({"state": state})
+            return Response(state_response)
         except Exception as e:
             return Response({"error": "User not found"})
         
