@@ -4,3 +4,15 @@
     flex-direction: column;
     text-align: center;
 }
+
+.classroom-description {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.class-props {
+    color: #ffffff;
+    font-size: 25px;
+    font-weight: 400;
+    text-align: left;
+}
