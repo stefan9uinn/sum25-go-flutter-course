@@ -92,7 +92,7 @@ class ClassRooms extends React.Component {
         }}>rooms</Text>
         </Title>
         
-          <div className="courses">
+        <div className="courses">
           {this.state.courses.map((el, idx) => (
             <div className="card" key={idx} >
                <img
