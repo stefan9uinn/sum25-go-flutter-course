@@ -60,3 +60,4 @@ jobs:
         run: |
           source .venv/bin/activate
           python backend/core/manage.py test tests
+          pytest tests/test_postgres_engine.py -m "not integration" -v
