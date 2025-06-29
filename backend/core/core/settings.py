@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'drf_yasg',
     'corsheaders',
-    #'account',
+    'account',
     #'classroom',
     'test',
     'schema',
