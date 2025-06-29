@@ -22,40 +22,45 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd pg_isready
+          --health-cmd "pg_isready -U postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
-    env:
-          DEBUG: false
-          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: test_db
-          POSTGRES_HOST: localhost
-    steps:
-      - uses: actions/checkout@v3
 
-      - name: Set up Python 3.13
+    env:
+      DEBUG: false
+      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: test_db
+      POSTGRES_HOST: localhost
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup Python 3.10
         uses: actions/setup-python@v4
         with:
-          python-version: 3.13
+          python-version: 3.10
 
-      - name: Install dependencies with cache
+      - name: Cache pip dependencies
         uses: actions/cache@v3
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('backend/core/requirements.txt') }}
           restore-keys: |
             ${{ runner.os }}-pip-
+
       - name: Install dependencies
         run: |
           python -m venv .venv
           source .venv/bin/activate
           pip install --upgrade pip
           pip install -r backend/core/requirements.txt
-      - name: Run tests
+
+      - name: Run Django tests
         run: |
           source .venv/bin/activate
           python backend/core/manage.py test tests
