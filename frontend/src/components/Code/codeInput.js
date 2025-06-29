@@ -39,7 +39,6 @@ class CodeInput extends React.Component {
                         defaultValue="Choose DB"
                         style={{ width: 190, marginRight: '10px', marginTop: '10px' }}
                         options={[
-                            { value: 'Choose DB', label: 'Choose DB', disabled: true },
                             { value: 'PostgreSQL', label: 'PostgreSQL' },
                             { value: 'SQLite', label: 'SQLite' },
                             { value: 'MongoDB', label: 'MongoDB' },
