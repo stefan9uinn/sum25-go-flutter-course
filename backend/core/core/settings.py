@@ -77,7 +77,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://89.169.182.245:3000",
 ]
 
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'core.core.urls'
 
 TEMPLATES = [
     {
