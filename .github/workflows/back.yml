@@ -28,6 +28,7 @@ jobs:
           --health-retries 5
 
     env:
+      DEBUG: False
       DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
       SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
     steps:
