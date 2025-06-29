@@ -24,6 +24,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = config('SECRET_KEY')
+if SECRET_KEY==none:
+    SECRET_KEY = os.environ.get("SECRET_KEY", "fallback-secret-for-local")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
@@ -77,7 +79,7 @@ CSRF_TRUSTED_ORIGINS = [
     "http://89.169.182.245:3000",
 ]
 
-ROOT_URLCONF = 'core.core.urls'
+ROOT_URLCONF = 'core.urls'
 
 TEMPLATES = [
     {
