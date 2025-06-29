@@ -101,7 +101,7 @@ class Home extends React.Component {
 
         <div className="start">
           <Paragraph className="home-text" style={{ fontSize: 20, fontWeight: 600 }}>
-            <Text className="home-text" style={{ fontSize: 20, fontWeight: 600, color: '#51CB63' }}>No</Text> setup, <Text className="home-text" style={{ fontSize: 20, fontWeight: 600, color: '#51CB63' }}>no</Text> installation. <br />
+            <Text className="home-text" style={{ fontSize: 20, fontWeight: 600, color: '#51CB63' }}>No</Text> setup, <Text className="home-text" style={{ fontSize: 20, fontWeight: 600, color: '#51CB63' }}>No</Text> installation. <br />
             Just write queries and explore!
           </Paragraph>
         </div>

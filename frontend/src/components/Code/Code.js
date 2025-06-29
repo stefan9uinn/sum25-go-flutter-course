@@ -1,6 +1,7 @@
 import React from 'react';
-import { getCode } from '../../api';
-import { getIState } from '../../api';
+import { getChromaResponse } from '../../api';
+import { getChromaInitialState } from '../../api';
+import { getPostgresTable, createPostgresTable, queryPostgres } from '../../api';
 import CodeInput from './codeInput';
 import OutputInputs from './output';
 import { Button, FloatButton, Typography } from 'antd';
@@ -12,11 +13,13 @@ class Code extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      response: {
-      },
+      response: {},
       db_state: {},
       isModalOpen: false,
       isLoading: false,
+      chosenDb: "Choose DB",
+      postgresTableInfo: {},
+      postgresResponse: {},
     }
 
     this.getIt = this.getIt.bind(this);
@@ -32,14 +35,14 @@ class Code extends React.Component {
       <div className="code-container">
         <Button className='my-back-button' style={{ height: '35px', fontSize: '15px' }} onClick={() => this.props.handleButtonClick("template")}>Back</Button>
         <main>
-          <CodeInput 
-            getIt={(text, chosenDb) => this.getIt(text, chosenDb)} 
+          <CodeInput
+            getIt={(text, chosenDb) => this.getIt(text, chosenDb)}
             onDbSelect={this.handleDbSelection}
-            isLoading={this.state.isLoading} 
+            isLoading={this.state.isLoading}
           />
         </main>
         <aside className="code-aside">
-          <OutputInputs response={this.state.response} db_state={this.state.db_state} />
+          <OutputInputs response={this.state.response} db_state={this.state.db_state} chosenDB={this.state.chosenDb} postgresTableInfo={this.state.postgresTableInfo} postgresResponse={this.state.postgresResponse}/>
         </aside>
         <FloatButton icon={<FaRegLightbulb />} type="basic" className='lamp' onClick={this.open} tooltip="Command Tips" />
         <HintModal title={<Typography.Text className='modal-title'>Types of command for <Typography.Text className='modal-title' style={{ color: '#51CB63' }}>Chroma</Typography.Text> </Typography.Text>} onCancel={this.close} open={this.state.isModalOpen} />
@@ -60,52 +63,89 @@ class Code extends React.Component {
     this.setState({ isModalOpen: false });
   }
 
-  getInitialState(selectedDb = null) {
+  getInitialState() {
     if (this.props.isLogin === false) {
       console.log("User not logged in, skipping state request");
       return;
     }
     this.setLoading(true);
     let string = (this.props.getCookie("login") + this.props.getCookie("password"));
-    getIState(string.hashCode())
+    getChromaInitialState(string.hashCode())
       .then(data => {
-        this.setState({ db_state: data }, () => {
-          console.log('DB state loaded for:', selectedDb, this.state.db_state);
-        });
+        this.setState({ db_state: data });
         this.setLoading(false);
       })
       .catch(error => {
         console.error('Error loading DB state:', error);
-         this.setLoading(false);
+        this.setLoading(false);
       });
+  }
+
+  postgresTableHandle = () => {
+    if (this.props.isLogin === false) {
+      console.log("User not logged in, skipping state request");
+      return;
+    }
+    this.setLoading(true);
+    let string = (this.props.getCookie("login") + this.props.getCookie("password"));
+    getPostgresTable(string.hashCode())
+      .then(data => {
+        console.log('PostgreSQL table data:', data);
+        this.setState({ postgresTableInfo: data.tables});
+        this.setLoading(false);
+      })
+      .catch(error => {
+        createPostgresTable(string.hashCode())
+          .then(data => {
+            console.log('PostgreSQL table created:', data);
+            getPostgresTable(string.hashCode())
+              .then(data => {
+                console.log('PostgreSQL table data after creation:', data);
+                this.setState({ postgresTableInfo: data.tables });
+                this.setState({ isLoading: false });
+              })
+              .catch(error => {
+                console.error('Error fetching PostgreSQL table after creation:', error);
+                this.setState({ isLoading: false });
+              })
+            this.setLoading(false);
+          })
+          .catch(error => {
+            console.error('Error creating PostgreSQL table:', error);
+            this.setLoading(false);
+          });
+        this.setLoading(false);
+      })
   }
 
   handleDbSelection(selectedDb) {
     console.log('Database selected:', selectedDb);
-    if (selectedDb === "Chroma") {
-      this.getInitialState(selectedDb);
-    } else if (selectedDb === "PostgreSQL" || selectedDb === "SQLite" || selectedDb === "MongoDB") {
-      console.log(`${selectedDb} is not yet supported for state loading`);
-      this.setState({ db_state: {} });
-    } else {
-      this.setState({ db_state: {} });
+    this.setState({ chosenDb: selectedDb });
+    switch (selectedDb) {
+      case "Chroma":
+        this.getInitialState();
+        break;
+      case "PostgreSQL":
+        this.postgresTableHandle();
+        break;
+      default:
+        console.log(`${selectedDb} is not yet supported for state loading`);
+        this.setState({ db_state: {} });
     }
   }
 
   async executeCommandsSequentially(commands, hashCode, error) {
     this.setLoading(true);
-    
-    // Массив для накопления всех результатов
     let allResults = [];
-    
+
     for (let i = 0; i < commands.length; i++) {
       const command = commands[i].trim();
       if (command === '') continue;
-      
+
       try {
         console.log(`Executing command ${i + 1}:`, command);
-        const data = await getCode(command, hashCode);
-        
+        const data = await getChromaResponse(command, hashCode);
+
         if (data === "Error") {
           allResults.push({
             command: command,
@@ -119,9 +159,7 @@ class Code extends React.Component {
             commandNumber: i + 1
           });
         }
-        
-        // Обновляем состояние с накопленными результатами
-        this.setState({ 
+        this.setState({
           response: {
             type: 'multiple_commands',
             commands: allResults,
@@ -130,7 +168,7 @@ class Code extends React.Component {
         }, () => {
           console.log(`Command ${i + 1} completed. Total results:`, allResults.length);
         });
-        
+
       } catch (error) {
         console.error(`Error in command ${i + 1}:`, error);
         allResults.push({
@@ -138,8 +176,8 @@ class Code extends React.Component {
           result: { message: "Error occurred while executing command" },
           commandNumber: i + 1
         });
-        
-        this.setState({ 
+
+        this.setState({
           response: {
             type: 'multiple_commands',
             commands: allResults,
@@ -148,8 +186,6 @@ class Code extends React.Component {
         });
       }
     }
-    
-    // Обновляем состояние БД после выполнения всех команд
     this.getInitialState("Chroma");
     this.setLoading(false);
   }
@@ -167,7 +203,24 @@ class Code extends React.Component {
       return;
     }
     if (chosenDb === "PostgreSQL") {
-      alert("Please choose another DB for now");
+      this.setLoading(true);
+      let string = (this.props.getCookie("login") + this.props.getCookie("password"));
+      queryPostgres(text, string.hashCode())
+        .then(data => {
+          if (data === "Error") {
+            this.setState({postgresResponse: { message: "Error occurred while executing command" } });
+          } else {
+            this.setState({postgresResponse: data}, () => {
+              console.log(this.state.postgresResponse);
+            });
+          }
+          this.postgresTableHandle();
+          this.setLoading(false);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          this.setLoading(false);
+        });
       return;
     }
     if (chosenDb === "SQLite") {
@@ -185,10 +238,10 @@ class Code extends React.Component {
       }
       let string = (this.props.getCookie("login") + this.props.getCookie("password"));
       if (!text.includes('\n')) {
-        getCode(text, string.hashCode())
+        getChromaResponse(text, string.hashCode())
           .then(data => {
             if (data === "Error") {
-              this.setState({ 
+              this.setState({
                 response: {
                   type: 'single_command',
                   command: text,
@@ -196,7 +249,7 @@ class Code extends React.Component {
                 }
               });
             } else {
-              this.setState({ 
+              this.setState({
                 response: {
                   type: 'single_command',
                   command: text,
@@ -206,7 +259,6 @@ class Code extends React.Component {
                 console.log('Single command result:', this.state.response);
               });
             }
-            // Обновляем состояние БД после выполнения команды
             this.getInitialState(chosenDb);
             this.setLoading(false);
           })
@@ -215,7 +267,7 @@ class Code extends React.Component {
             this.setLoading(false);
           });
       }
-      else{
+      else {
         let commands = text.split('\n');
         this.executeCommandsSequentially(commands, string.hashCode(), error);
       }
@@ -232,7 +284,7 @@ String.prototype.hashCode = function () {
     hash = ((hash << 5) - hash) + chr;
     hash |= 0;
   }
-  return hash;
+  return hash.toString();
 };
 
 
