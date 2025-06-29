@@ -12,7 +12,7 @@ from rest_framework_simplejwt.views import (
     TokenVerifyView,
 )
 
-from classroom.views import ClassroomModelViewSet
+from backend_db.views import ClassroomViewSet
 
 import schema.views
 
@@ -29,10 +29,6 @@ schema_view = get_schema_view(
    permission_classes=(permissions.AllowAny,),
 )
 
-
-router = routers.SimpleRouter()
-router.register(r'schema', schema.views.DBSchemaModelViewSet)
-router.register(r'classroom', ClassroomModelViewSet)
 from db.views import ChromaQueryParser
 
 urlpatterns = [
@@ -56,6 +52,7 @@ urlpatterns = [
     path('test/', include("test.urls")),
     path('template/', include("templates.urls")),
     path('db/', include("db.urls")),
+    path('app/', include('core.api_urls')),
 ]
 
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
