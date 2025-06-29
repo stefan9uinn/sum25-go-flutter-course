@@ -28,8 +28,13 @@ jobs:
           --health-retries 5
 
     env:
-      DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
-      SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DEBUG: false
+          SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/test_db
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+          POSTGRES_HOST: localhost
     steps:
       - uses: actions/checkout@v3
 
