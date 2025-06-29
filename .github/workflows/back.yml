@@ -57,4 +57,4 @@ jobs:
       - name: Run tests
         run: |
           source .venv/bin/activate
-          python backend/core/manage.py test tests
+          python backend/core/manage.py test core.tests
