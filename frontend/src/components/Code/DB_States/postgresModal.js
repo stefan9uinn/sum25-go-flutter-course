@@ -19,6 +19,7 @@ class PostgresModal extends React.Component {
            
         </div>
         
+        
       </Modal>
     )
   }
