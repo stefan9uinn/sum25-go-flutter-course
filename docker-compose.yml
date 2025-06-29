@@ -37,7 +37,7 @@ services:
       # - POSTGRES_USER=my_pg_user
       # - POSTGRES_PASSWORD=my_pg_password
     command: >
-      sh -c "python core/manage.py migrate && python core/manage.py runserver 0.0.0.0:8000"
+      sh -c "Remove-Item -Recurse -Force backend_postgres_data && python core/manage.py migrate && python core/manage.py runserver 0.0.0.0:8000"
 
   chroma:
     build:
