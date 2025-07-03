@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:lab02_chat/user_service.dart';
+import 'user_service.dart';
 
 // UserProfile displays and updates user info
 class UserProfile extends StatefulWidget {
-  final UserService
-      userService; // Accepts a user service for fetching user info
+  final UserService userService; // Accepts a user service for fetching user info
   const UserProfile({Key? key, required this.userService}) : super(key: key);
 
   @override
@@ -12,21 +11,84 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-  // TODO: Add state for user data, loading, and error
-  // TODO: Fetch user info from userService (simulate for tests)
+  // State for user data, loading, and error
+  Map<String, String>? _userData;
+  bool _loading = true;
+  String? _error;
 
   @override
   void initState() {
     super.initState();
-    // TODO: Fetch user info and update state
+    _fetchUser();
+  }
+
+  void _fetchUser() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      final user = await widget.userService.fetchUser();
+      setState(() {
+        _userData = user;
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Build user profile UI with loading, error, and user info
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Error: $_error', style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: _fetchUser,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(title: const Text('User Profile')),
-      body: const Center(child: Text('TODO: Implement user profile UI')),
+      body: _userData == null
+        ? const Center(child: Text('No user data found.'))
+        : Padding(
+            padding: const EdgeInsets.all(24.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const SizedBox(height: 16),
+                Text(
+                  'Name: ${_userData!['name'] ?? ''}',
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 12),
+                Text(
+                  'Email: ${_userData!['email'] ?? ''}',
+                  style: const TextStyle(fontSize: 18, color: Colors.grey),
+                ),
+                const SizedBox(height: 24),
+                ElevatedButton(
+                  onPressed: _fetchUser,
+                  child: const Text('Refresh'),
+                ),
+              ],
+            ),
+          ),
     );
   }
 }
