@@ -1,0 +1,34 @@
+name: Deploy Flutter Web to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        run: sudo apt-get update && sudo apt-get install -y flutter
+
+      - name: Install dependencies
+        run: flutter pub get
+        working-directory: labs/lab07/frontend
+
+      - name: Build web
+        run: flutter build web
+        working-directory: labs/lab07/frontend
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.TOKEN }}
+          publish_dir: ./build/web
+          user_name: ${{ secrets.USER_NAME }}
+          user_email: ${{ secrets.USER_EMAIL }}
+          commit_message: "Deploy Flutter Web"
