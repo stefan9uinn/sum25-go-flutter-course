@@ -30,7 +30,8 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.TOKEN }}
-          publish_dir: ./build/web
+          publish_dir: labs/lab07/frontend/build/web
           user_name: ${{ secrets.USER_NAME }}
           user_email: ${{ secrets.USER_EMAIL }}
           commit_message: "Deploy Flutter Web"
+          
