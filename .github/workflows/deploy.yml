@@ -26,6 +26,9 @@ jobs:
         run: flutter build web
         working-directory: labs/lab07/frontend
 
+      - name: List build output
+        run: ls -l ./labs/lab07/frontend/build/web
+
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
         with:
