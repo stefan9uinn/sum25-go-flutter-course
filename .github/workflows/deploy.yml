@@ -3,7 +3,7 @@ name: Deploy Flutter Web to GitHub Pages
 on:
   push:
     branches:
-      - lab07-farafonov=stefan
+      - lab07-farafonov-stefan
   workflow_dispatch:
 
 jobs:
