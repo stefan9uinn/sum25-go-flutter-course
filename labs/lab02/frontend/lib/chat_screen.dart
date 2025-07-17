@@ -12,34 +12,126 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  // TODO: Add TextEditingController for input
-  // TODO: Add state for messages, loading, and error
-  // TODO: Subscribe to chatService.messageStream
-  // TODO: Implement UI for sending and displaying messages
-  // TODO: Simulate chat logic for tests (current implementation is a simulation)
+  // Text controller for input
+  final TextEditingController _controller = TextEditingController();
+
+  // State for messages, loading, and error
+  List<String> _messages = [];
+  bool _loading = true;
+  String? _error;
+  StreamSubscription<String>? _subscription;
 
   @override
   void initState() {
     super.initState();
-    // TODO: Connect to chat service and set up listeners
+    _connectAndSubscribe();
+  }
+
+  void _connectAndSubscribe() async {
+    setState(() {
+      _loading = true;
+      _error = null;
+    });
+    try {
+      await widget.chatService.connect();
+      _subscription = widget.chatService.messageStream.listen((msg) {
+        setState(() {
+          _messages.add(msg);
+        });
+      }, onError: (err) {
+        setState(() {
+          _error = err.toString();
+        });
+      });
+      setState(() {
+        _loading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+        _loading = false;
+      });
+    }
   }
 
   @override
   void dispose() {
-    // TODO: Dispose controllers and subscriptions
+    _controller.dispose();
+    _subscription?.cancel();
     super.dispose();
   }
 
   void _sendMessage() async {
-    // TODO: Send message using chatService
+    final text = _controller.text.trim();
+    if (text.isEmpty) return;
+    try {
+      await widget.chatService.sendMessage(text);
+      _controller.clear();
+    } catch (e) {
+      setState(() {
+        _error = e.toString();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Build chat UI with loading, error, and message list
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+    if (_error != null) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text('Error: $_error', style: const TextStyle(color: Colors.red)),
+            const SizedBox(height: 12),
+            ElevatedButton(
+              onPressed: _connectAndSubscribe,
+              child: const Text('Retry'),
+            ),
+          ],
+        ),
+      );
+    }
     return Scaffold(
       appBar: AppBar(title: const Text('Chat')),
-      body: const Center(child: Text('TODO: Implement chat UI')),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              reverse: false,
+              itemCount: _messages.length,
+              itemBuilder: (context, idx) {
+                return ListTile(
+                  title: Text(_messages[idx]),
+                );
+              },
+            ),
+          ),
+          const Divider(height: 1),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _controller,
+                    decoration: const InputDecoration(
+                      hintText: 'Enter message...',
+                    ),
+                    onSubmitted: (_) => _sendMessage(),
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.send),
+                  onPressed: _sendMessage,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
